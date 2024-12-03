@@ -78,6 +78,7 @@
 #include "CTiglApproxResult.h"
 #include "SurfTools.hxx"
 #include "CTiglConcatSurfaces.h"
+#include "CTiglRectGridSurface.h"
 %}
 
 %catch_exceptions()
@@ -94,11 +95,13 @@
 %template(SurfaceList) std::vector<Handle(Geom_Surface)>;
 %template(CurveIntersectionResultList) std::vector<tigl::CurveIntersectionResult>;
 
+
 %boost_optional(tigl::CCPACSPointAbsRel)
 %boost_optional(tigl::CCPACSPoint)
 %boost_optional(tigl::ECPACSTranslationType)
 %boost_optional(tigl::generated::CPACSPointX)
 %boost_optional(tigl::generated::CPACSPointXYZ)
+%boost_optional(UVResult)
 
 %include "CTiglConcatSurfaces.h"
 %include "SurfTools.hxx"
@@ -153,3 +156,6 @@
 %include "ListPNamedShape.h"
 %include "CTiglInterpolatePointsWithKinks.h"
 
+%include "CTiglRectGridSurface.h"
+%template(CTiglRectGridSurfaceTrimShapeAnnotation) tigl::CTiglRectGridSurface<tigl::TrimShapeAnnotation>;
+%ignore tigl::CTiglRectGridSurface<tigl::TrimShapeAnnotation>::Root;

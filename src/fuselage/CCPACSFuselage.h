@@ -37,7 +37,6 @@
 #include "Cache.h"
 
 #include "TopoDS_Shape.hxx"
-#include "TopoDS_Compound.hxx"
 #include "BRep_Builder.hxx"
 #include <gp_Lin.hxx>
 
@@ -149,7 +148,6 @@ private:
     FusedElementsContainerType fusedElements;        /**< Stores already fused segments */
 
     Cache<PNamedShape, CCPACSFuselage> cleanLoft; /**< Stores the loft with cutouts (e.g. ducts) */
-
 
     TopoDS_Compound            aCompound;
     BRep_Builder               aBuilder;

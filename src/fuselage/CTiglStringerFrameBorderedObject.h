@@ -54,6 +54,11 @@ public:
     TIGL_EXPORT bool Contains(const TopoDS_Edge& edge) const; // in global coords
     TIGL_EXPORT bool Contains(const gp_Pnt& point) const; // in global coords
 
+    TIGL_EXPORT gp_Ax1 GetBorder_sFrame_sStringer() const;
+    TIGL_EXPORT gp_Ax1 GetBorder_eFrame_sStringer() const;
+    TIGL_EXPORT gp_Ax1 GetBorder_sFrame_eStringer() const;
+    TIGL_EXPORT gp_Ax1 GetBorder_eFrame_eStringer() const;
+
 protected:
     void InvalidateShapes(const boost::optional<std::string>& source) const;
 
