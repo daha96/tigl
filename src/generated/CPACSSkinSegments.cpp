@@ -125,5 +125,39 @@ namespace generated
         throw CTiglError("Element not found");
     }
 
+
+int CPACSSkinSegments::GetSkinSegmentCount() const
+{
+    return static_cast<int>(m_skinSegments.size());
+}
+
+CCPACSSkinSegment& CPACSSkinSegments::GetSkinSegment(int index) const
+{
+    const int idx = index - 1;
+    if (idx < 0 || idx >= GetSkinSegmentCount()) {
+        LOG(ERROR) << "Invalid index value";
+        throw CTiglError("Invalid index value in CCPACSSkinSegments::GetSkinSegment", TIGL_INDEX_ERROR);
+    }
+    return (*(m_skinSegments[idx]));
+}
+
+CCPACSSkinSegment& CCPACSSkinSegments::GetSkinSegment(const std::string& UID) const
+{
+    return *m_skinSegments[GetSkinSegmentIndex(UID)-1];
+}
+
+int CCPACSSkinSegments::GetSkinSegmentIndex(const std::string& UID) const
+{
+    for (int i=0; i < GetSkinSegmentCount(); i++) {
+        const std::string tmpUID(m_skinSegments[i]->GetUID());
+        if (tmpUID == UID) {
+            return i+1;
+        }
+    }
+
+    // UID not there
+    throw CTiglError("Invalid UID in CCPACSSkinSegments::GetSkinSegmentIndex", TIGL_UID_ERROR);
+}
+
 } // namespace generated
 } // namespace tigl
