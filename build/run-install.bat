@@ -1,0 +1,1 @@
+cmake --build . -j 4 --target install --config Release

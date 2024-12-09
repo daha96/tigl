@@ -57,4 +57,9 @@ void CCPACSSkinSegment::InvalidateImpl(const boost::optional<std::string>& sourc
     CTiglStringerFrameBorderedObject::InvalidateShapes(source);
 }
 
+TopoDS_Shape CCPACSSkinSegment::GetGeometry(TiglCoordinateSystem referenceCS) const
+{
+    return CTiglStringerFrameBorderedObject::GetGeometry(referenceCS);
+}
+
 } // namespace tigl
