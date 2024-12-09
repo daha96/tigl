@@ -63,6 +63,7 @@
 #include "CCPACSWingSparSegment.h"
 #include "CCPACSWingRibsDefinition.h"
 #include "CCPACSSkinSegment.h"
+#include "CCPACSSkinSegments.h"
 #include "CCPACSDuctStructure.h"
 #include "CCPACSSkin.h"
 #include "CTiglWingChordface.h"
@@ -305,6 +306,7 @@ namespace tigl
 %include "generated/CPACSSkinSegment.h"
 %include "CCPACSSkinSegment.h"
 %boost_optional(CCPACSSkin)
+%include "CCPACSSkinSegments.h"
 %include "generated/CPACSSkin.h"
 %include "CCPACSSkin.h"
 %include "generated/CPACSCargoDoorsAssembly.h"
