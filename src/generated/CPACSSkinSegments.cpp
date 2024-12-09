@@ -125,5 +125,33 @@ namespace generated
         throw CTiglError("Element not found");
     }
 
+
+int CCPACSSkinSegments::GetSkinSegmentCount() const
+{
+    return static_cast<int>(m_skinSegments.size());
+}
+
+CCPACSSkinSegment& CCPACSSkinSegments::GetSkinSegment(int index) const
+{
+    const int idx = index - 1;
+    if (idx < 0 || idx >= GetSkinSegmentCount()) {
+        LOG(ERROR) << "Invalid index value";
+        throw CTiglError("Invalid index value in CCPACSSkinSegments::GetSkinSegment", TIGL_INDEX_ERROR);
+    }
+    return (*(m_skinSegments[idx]));
+}
+
+CCPACSSkinSegment& CCPACSSkinSegments::GetSkinSegment(const std::string& uid) const
+{
+    for (auto& s : m_skinSegments) {
+        if (s->GetUID() == uid) {
+            return *s;
+        }
+    }
+    const std::string& referenceUID = CTiglWingStructureReference(*GetParent()->GetParent()).GetUID();
+    LOG(ERROR) << "Spar Segment \"" << uid << "\" not found in component segment or trailing edge device with UID \"" << referenceUID << "\"";
+    throw CTiglError("Spar Segment \"" + uid + "\" not found in component segment or trailing edge device with UID \"" + referenceUID + "\". Please check the CPACS document!", TIGL_ERROR);
+}
+
 } // namespace generated
 } // namespace tigl

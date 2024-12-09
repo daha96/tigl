@@ -66,6 +66,11 @@ namespace generated
         TIGL_EXPORT virtual CCPACSSkinSegment& AddSkinSegment();
         TIGL_EXPORT virtual void RemoveSkinSegment(CCPACSSkinSegment& ref);
 
+
+    TIGL_EXPORT int GetSkinSegmentCount() const;
+    TIGL_EXPORT CCPACSSkinSegment& GetSkinSegment(int index) const;
+    TIGL_EXPORT CCPACSSkinSegment& GetSkinSegment(const std::string& uid) const;
+
     protected:
         CCPACSSkin* m_parent;
 
