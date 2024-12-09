@@ -141,6 +141,7 @@ CCPACSSkinSegment& CPACSSkinSegments::GetSkinSegment(int index) const
     return (*(m_skinSegments[idx]));
 }
 
+/*
 CCPACSSkinSegment& CPACSSkinSegments::GetSkinSegment(const std::string& uid) const
 {
     for (auto& s : m_skinSegments) {
@@ -151,7 +152,7 @@ CCPACSSkinSegment& CPACSSkinSegments::GetSkinSegment(const std::string& uid) con
     const std::string& referenceUID = CTiglWingStructureReference(*GetParent()->GetParent()).GetUID();
     LOG(ERROR) << "Spar Segment \"" << uid << "\" not found in component segment or trailing edge device with UID \"" << referenceUID << "\"";
     throw CTiglError("Spar Segment \"" + uid + "\" not found in component segment or trailing edge device with UID \"" + referenceUID + "\". Please check the CPACS document!", TIGL_ERROR);
-}
+}*/
 
 } // namespace generated
 } // namespace tigl
