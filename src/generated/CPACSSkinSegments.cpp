@@ -126,12 +126,12 @@ namespace generated
     }
 
 
-int CCPACSSkinSegments::GetSkinSegmentCount() const
+int CPACSSkinSegments::GetSkinSegmentCount() const
 {
     return static_cast<int>(m_skinSegments.size());
 }
 
-CCPACSSkinSegment& CCPACSSkinSegments::GetSkinSegment(int index) const
+CCPACSSkinSegment& CPACSSkinSegments::GetSkinSegment(int index) const
 {
     const int idx = index - 1;
     if (idx < 0 || idx >= GetSkinSegmentCount()) {
@@ -141,7 +141,7 @@ CCPACSSkinSegment& CCPACSSkinSegments::GetSkinSegment(int index) const
     return (*(m_skinSegments[idx]));
 }
 
-CCPACSSkinSegment& CCPACSSkinSegments::GetSkinSegment(const std::string& uid) const
+CCPACSSkinSegment& CPACSSkinSegments::GetSkinSegment(const std::string& uid) const
 {
     for (auto& s : m_skinSegments) {
         if (s->GetUID() == uid) {
