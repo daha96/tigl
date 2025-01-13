@@ -92,6 +92,11 @@ namespace generated
         TIGL_EXPORT virtual CCPACSFrame& AddFrame();
         TIGL_EXPORT virtual void RemoveFrame(CCPACSFrame& ref);
 
+    TIGL_EXPORT int GetFrameCount() const;
+    TIGL_EXPORT CCPACSFrame& GetFrame(int index) const;
+    TIGL_EXPORT int GetFrameIndex(const std::string& UID) const;
+    TIGL_EXPORT CCPACSFrame& GetFrame(const std::string& uid) const;
+
     protected:
         void* m_parent;
         const std::type_info* m_parentType;

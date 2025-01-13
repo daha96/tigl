@@ -69,7 +69,8 @@ namespace generated
 
     TIGL_EXPORT int GetSkinSegmentCount() const;
     TIGL_EXPORT CCPACSSkinSegment& GetSkinSegment(int index) const;
-    //TIGL_EXPORT CCPACSSkinSegment& GetSkinSegment(const std::string& uid) const;
+    TIGL_EXPORT int GetSkinSegmentIndex(const std::string& UID) const;
+    TIGL_EXPORT CCPACSSkinSegment& GetSkinSegment(const std::string& uid) const;
 
     protected:
         CCPACSSkin* m_parent;
