@@ -323,10 +323,19 @@ namespace tigl
 %include "CCPACSCrossBeamStrutAssemblyPosition.h"
 %include "generated/CPACSPressureBulkheadAssemblyPosition.h"
 %include "CCPACSPressureBulkheadAssemblyPosition.h"
+
+%include "generated/CPACSFrame.h"
+%include "CCPACSFrame.h"
+
 %include "generated/CPACSFramesAssembly.h"
 %include "CCPACSFramesAssembly.h"
+
+%include "generated/CPACSFuselageStringer.h"
+%include "CCPACSStringer.h"
+
 %include "generated/CPACSStringersAssembly.h"
 %include "CCPACSStringersAssembly.h"
+
 %include "generated/CPACSSkinSegments.h"
 %include "generated/CPACSSkin.h"
 %include "generated/CPACSFuselageStructure.h"
