@@ -331,7 +331,7 @@ namespace tigl
 %include "CCPACSFramesAssembly.h"
 
 %include "generated/CPACSStringer.h"
-%include "CPACSFuselageStringer.h"
+%include "CCPACSFuselageStringer.h"
 
 %include "generated/CPACSStringersAssembly.h"
 %include "CCPACSStringersAssembly.h"
