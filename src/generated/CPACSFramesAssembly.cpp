@@ -145,17 +145,17 @@ CCPACSFrame& CPACSCPACSFramesAssembly::GetFrame(int index) const
     const int idx = index - 1;
     if (idx < 0 || idx >= GetFrameCount()) {
         LOG(ERROR) << "Invalid index value";
-        throw CTiglError("Invalid index value in CCPACSCPACSFramesAssembly::GetFrame", TIGL_INDEX_ERROR);
+        throw CTiglError("Invalid index value in CPACSFramesAssembly::GetFrame", TIGL_INDEX_ERROR);
     }
     return (*(m_frames[idx]));
 }
 
-CCPACSFrame& CCPACSCPACSFramesAssembly::GetFrame(const std::string& UID) const
+CCPACSFrame& CPACSFramesAssembly::GetFrame(const std::string& UID) const
 {
     return *m_frames[GetFrameIndex(UID)-1];
 }
 
-int CCPACSCPACSFramesAssembly::GetFrameIndex(const std::string& UID) const
+int CPACSFramesAssembly::GetFrameIndex(const std::string& UID) const
 {
     for (int i=0; i < GetFrameCount(); i++) {
         const std::string tmpUID(m_frames[i]->GetUID());
@@ -165,7 +165,7 @@ int CCPACSCPACSFramesAssembly::GetFrameIndex(const std::string& UID) const
     }
 
     // UID not there
-    throw CTiglError("Invalid UID in CCPACSCPACSFramesAssembly::GetFrameIndex", TIGL_UID_ERROR);
+    throw CTiglError("Invalid UID in CPACSFramesAssembly::GetFrameIndex", TIGL_UID_ERROR);
 }
 
 } // namespace generated
