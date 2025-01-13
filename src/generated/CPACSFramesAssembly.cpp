@@ -135,12 +135,12 @@ namespace generated
         throw CTiglError("Element not found");
     }
     
-    int CPACSCPACSFramesAssembly::GetFrameCount() const
+    int CPACSFramesAssembly::GetFrameCount() const
 {
     return static_cast<int>(m_frames.size());
 }
 
-CCPACSFrame& CPACSCPACSFramesAssembly::GetFrame(int index) const
+CCPACSFrame& CPACSFramesAssembly::GetFrame(int index) const
 {
     const int idx = index - 1;
     if (idx < 0 || idx >= GetFrameCount()) {
