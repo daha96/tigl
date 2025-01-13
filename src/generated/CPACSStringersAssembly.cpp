@@ -140,7 +140,7 @@ namespace generated
     return static_cast<int>(m_stringers.size());
 }
 
-CCPACSStringer& CPACSCPACSStringersAssembly::GetStringer(int index) const
+CCPACSFuselageStringer& CPACSCPACSStringersAssembly::GetStringer(int index) const
 {
     const int idx = index - 1;
     if (idx < 0 || idx >= GetStringerCount()) {
@@ -150,7 +150,7 @@ CCPACSStringer& CPACSCPACSStringersAssembly::GetStringer(int index) const
     return (*(m_stringers[idx]));
 }
 
-CCPACSStringer& CCPACSCPACSStringersAssembly::GetStringer(const std::string& UID) const
+CCPACSFuselageStringer& CCPACSCPACSStringersAssembly::GetStringer(const std::string& UID) const
 {
     return *m_stringers[GetStringerIndex(UID)-1];
 }

@@ -96,7 +96,7 @@ namespace generated
     TIGL_EXPORT int GetStringerCount() const;
     TIGL_EXPORT CCPACSStringer& GetStringer(int index) const;
     TIGL_EXPORT int GetStringerIndex(const std::string& UID) const;
-    TIGL_EXPORT CCPACSStringer& GetStringer(const std::string& uid) const;
+    TIGL_EXPORT CCPACSFuselageStringer& GetStringer(const std::string& uid) const;
 
     protected:
         void* m_parent;
@@ -115,5 +115,5 @@ namespace generated
     };
 } // namespace generated
 
-// CPACSStringersAssembly is customized, use type CCPACSStringersAssembly directly
+// CPACSStringersAssembly is customized, use type CCPACSFuselageStringersAssembly directly
 } // namespace tigl
