@@ -89,6 +89,12 @@
 #include "generated/CPACSLateralCap_placement.h"
 #include "generated/CPACSLateralCap.h"
 #include "generated/CPACSBoundingElementUIDs.h"
+
+#include "generated/CPACSFrame.h"
+#include "CCPACSFrame.h"
+#include "generated/CPACSStringer.h"
+#include "CCPACSFuselageStringer.h"
+
 #include "generated/CPACSStructuralWallElement.h"
 #include "generated/CPACSStructuralWallElements.h"
 #include "generated/CPACSWalls.h"
