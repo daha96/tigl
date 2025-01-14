@@ -150,6 +150,7 @@
 %boost_optional(tigl::generated::CPACSRotorHub)
 %boost_optional(tigl::TiglRotorHubType)
 %boost_optional(tigl::generated::CPACSRotor_type)
+%boost_optional(tigl::ITiglFuselageDuctStructure)
 %boost_optional(tigl::CCPACSFuselageStructure)
 %boost_optional(tigl::generated::CPACSLinkToFileType_format)
 %boost_optional(tigl::CCPACSWingCells)
