@@ -344,6 +344,7 @@ namespace tigl
 
 %include "generated/CPACSSkinSegments.h"
 %include "generated/CPACSSkin.h"
+%include "ITiglFuselageDuctStructure.h"
 %include "generated/CPACSFuselageStructure.h"
 %include "CCPACSFuselageStructure.h"
 

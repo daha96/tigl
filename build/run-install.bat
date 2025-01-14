@@ -1,1 +1,1 @@
-cmake --build . -j 4 --target install --config Release
+cmake --build . -j 12 --target install --config Release
