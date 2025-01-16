@@ -114,7 +114,7 @@ bool CTiglStringerFrameBorderedObject::Contains(const gp_Pnt& point) const
         if (test1.Angle(c.sFrame_sStringer) < _90DegInRad) {
             gp_Ax1 test3(c.eFrame_sStringer.Location(), gp_Vec(c.eFrame_sStringer.Location(), point));
             if (test3.Angle(c.eFrame_sStringer) < _90DegInRad) {
-                    return true;
+                return true;
             }            
         }
 
@@ -218,6 +218,12 @@ void CTiglStringerFrameBorderedObject::UpdateBorder(gp_Ax1& b, TopoDS_Shape fram
     }
 
     throw CTiglError("No intersection between frame and stringer");
+}
+
+CTiglStringerFrameBorderedObject::BorderCache& CTiglStringerFrameBorderedObject::GetBorderCache() const
+{
+    //const CTiglStringerFrameBorderedObject::BorderCache& c = *m_borderCache;
+    return const_cast<CTiglStringerFrameBorderedObject::BorderCache&>(static_cast<const CTiglStringerFrameBorderedObject::BorderCache&>(m_borderCache.value()));
 }
 
 /*std::string CTiglStringerFrameBorderedObject::GetEndStringerUid() const
