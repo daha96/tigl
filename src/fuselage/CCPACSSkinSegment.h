@@ -31,7 +31,7 @@ public:
     TIGL_EXPORT virtual void SetStartStringerUID(const std::string& value) override;
     TIGL_EXPORT virtual void SetEndStringerUID(const boost::optional<std::string>& value) override;
 
-    TIGL_EXPORT virtual TopoDS_Shape GetGeometry(TiglCoordinateSystem referenceCS = GLOBAL_COORDINATE_SYSTEM) const;
+    //TIGL_EXPORT virtual TopoDS_Shape GetGeometry(TiglCoordinateSystem referenceCS = GLOBAL_COORDINATE_SYSTEM) const;
 
 private:
     void InvalidateImpl(const boost::optional<std::string>& source) const override;
