@@ -3,10 +3,21 @@ Changelog
 
 Changes since last release
 -------------
+18/12/2024
+
+- Fixes
+  - #936 A particular defined positioning (of the C++-type CCPACSPositioning) was not available via Python bindings since the std::vector<std::unique_ptr<**Type**>> is not exposed to swig. New getter functions have been implemented in CCPACSPositioning.h to make these elements accesible via index, similar to the implementation of for several other classes. For more information see https://github.com/RISCSoftware/cpacs_tigl_gen/issues/59.
+
+  
+- General changes:
+    - Update the C++ standard to C++17 (#1045).
+
+
 13/11/2024
 
  - Fixes:
    - In #1026, the tolerance for creating cells via contourCoordinate was reduced for cells in spanwise direction. That fixed a bug that caused cells to overlap potentially. The same reduction was missed in chordwise direction and is added now to avoid the cell overlap in chordwise direction, as well. (#1034)
+   - Added `CCPACSSkin` to python bindings (#1037).
 
 
 Version 3.4.0
