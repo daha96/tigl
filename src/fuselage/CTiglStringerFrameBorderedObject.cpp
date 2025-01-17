@@ -203,8 +203,8 @@ void CTiglStringerFrameBorderedObject::UpdateBorders(BorderCache& cache) const
         UpdateBorder(cache.eFrame_sStringer, eFrame.GetGeometry(true), sStringer.GetGeometry(true));
 
         // generate directions to the opposite intersection point
-        cache.sFrame_sStringer.SetDirection(gp_Vec(cache.sFrame_sStringer.Location(), cache.eFrame_eStringer.Location()));
-        cache.eFrame_sStringer.SetDirection(gp_Vec(cache.eFrame_sStringer.Location(), cache.sFrame_eStringer.Location()));
+        cache.sFrame_sStringer.SetDirection(gp_Vec(cache.sFrame_sStringer.Location(), cache.eFrame_sStringer.Location()));
+        cache.eFrame_sStringer.SetDirection(gp_Vec(cache.eFrame_sStringer.Location(), cache.sFrame_sStringer.Location()));
     }
 }
 
