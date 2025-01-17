@@ -56,6 +56,10 @@ public:
 
 protected:
 
+    void InvalidateShapes(const boost::optional<std::string>& source) const;
+
+private:
+
     struct BorderCache {
         gp_Ax1 sFrame_sStringer;
         gp_Ax1 sFrame_eStringer;
@@ -63,14 +67,11 @@ protected:
         gp_Ax1 eFrame_eStringer;
     };
 
-    void InvalidateShapes(const boost::optional<std::string>& source) const;
-
     void BuildGeometry(TopoDS_Shape& cache) const;
     void UpdateBorders(BorderCache& cache) const;
     void UpdateBorder(gp_Ax1& b, TopoDS_Shape s1, TopoDS_Shape s2) const;
     //std::string GetEndStringerUid() const;
 
-private:
     const CTiglUIDManager& m_uidMgr;
     const CTiglRelativelyPositionedComponent* m_parent;
     std::string& m_startFrameUID;
