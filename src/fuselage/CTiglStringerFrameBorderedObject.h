@@ -49,6 +49,13 @@ public:
     TIGL_EXPORT bool Contains(const TopoDS_Edge& edge) const; // in global coords
     TIGL_EXPORT bool Contains(const gp_Pnt& point) const; // in global coords
 
+    TIGL_EXPORT gp_Ax1 GetBorder_sFrame_sStringer() const;
+    TIGL_EXPORT gp_Ax1 GetBorder_eFrame_sStringer() const;
+    TIGL_EXPORT gp_Ax1 GetBorder_sFrame_eStringer() const;
+    TIGL_EXPORT gp_Ax1 GetBorder_eFrame_eStringer() const;
+
+protected:
+
     struct BorderCache {
         gp_Ax1 sFrame_sStringer;
         gp_Ax1 sFrame_eStringer;
@@ -56,15 +63,12 @@ public:
         gp_Ax1 eFrame_eStringer;
     };
 
-    BorderCache& GetBorderCache() const;
+    void InvalidateShapes(const boost::optional<std::string>& source) const;
 
     void BuildGeometry(TopoDS_Shape& cache) const;
     void UpdateBorders(BorderCache& cache) const;
     void UpdateBorder(gp_Ax1& b, TopoDS_Shape s1, TopoDS_Shape s2) const;
     //std::string GetEndStringerUid() const;
-
-protected:
-    void InvalidateShapes(const boost::optional<std::string>& source) const;
 
 private:
     const CTiglUIDManager& m_uidMgr;

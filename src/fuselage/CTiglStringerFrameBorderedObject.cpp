@@ -220,6 +220,30 @@ void CTiglStringerFrameBorderedObject::UpdateBorder(gp_Ax1& b, TopoDS_Shape fram
     throw CTiglError("No intersection between frame and stringer");
 }
 
+gp_Ax1 CTiglStringerFrameBorderedObject::GetBorder_sFrame_sStringer() const
+{
+    const CTiglStringerFrameBorderedObject::BorderCache& c = *m_borderCache;
+    return c.sFrame_sStringer;
+}
+    
+gp_Ax1 CTiglStringerFrameBorderedObject::GetBorder_eFrame_sStringer() const
+{
+    const CTiglStringerFrameBorderedObject::BorderCache& c = *m_borderCache;
+    return c.eFrame_sStringer;
+}
+    
+gp_Ax1 CTiglStringerFrameBorderedObject::GetBorder_sFrame_eStringer() const
+{
+    const CTiglStringerFrameBorderedObject::BorderCache& c = *m_borderCache;
+    return c.sFrame_eStringer;
+}
+    
+gp_Ax1 CTiglStringerFrameBorderedObject::GetBorder_eFrame_eStringer() const
+{
+    const CTiglStringerFrameBorderedObject::BorderCache& c = *m_borderCache;
+    return c.eFrame_eStringer;
+}
+/*
 CTiglStringerFrameBorderedObject::BorderCache& CTiglStringerFrameBorderedObject::GetBorderCache() const
 {
     //const CTiglStringerFrameBorderedObject::BorderCache& c = *m_borderCache;
