@@ -89,7 +89,7 @@ bool CTiglStringerFrameBorderedObject::Contains(const TopoDS_Edge& edge) const
 bool CTiglStringerFrameBorderedObject::Contains(const gp_Pnt& point) const
 {
     const double _45DegInRad = Radians(45.0);
-    const double _90DegInRad = Radians(90.0);
+    const double _90DegInRad = Radians(89.0);
     const CTiglStringerFrameBorderedObject::BorderCache& c = *m_borderCache;
 
     if (m_endStringerUID.has_value()) {
