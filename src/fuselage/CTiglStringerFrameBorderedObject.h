@@ -73,7 +73,7 @@ private:
     void BuildGeometry(TopoDS_Shape& cache) const;
     void UpdateBorders(BorderCache& cache) const;
     void UpdateBorder(gp_Ax1& b, TopoDS_Shape s1, TopoDS_Shape s2) const;
-    std::string GetEndStringerUid() const;
+    boost::optional<std::string> GetEndStringerUid() const;
 
 private:
     const CTiglUIDManager& m_uidMgr;
