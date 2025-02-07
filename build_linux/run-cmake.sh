@@ -1,3 +1,4 @@
+#!/bin/bash
 cmake -G "Ninja" \
  -DTIGL_VIEWER=OFF \
  -DTIGL_BINDINGS_PYTHON_INTERNAL=ON \
