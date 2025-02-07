@@ -149,11 +149,14 @@ void CCPACSSkinSegment::BuildGeometryUVSegment(const TopoDS_Shape& loft, double 
     // The skin is composed of a rectangular grid of faces. We need to annotate
     // these faces to trim the correct faces at the correct parameters.
 
+    //LOG(ERROR) << "BuildGeometryUVSegment 1";
 
     CTiglRectGridSurface<TrimShapeAnnotation> rgsurface = CTiglRectGridSurface<TrimShapeAnnotation>(loft);
     std::vector<double> row_ranges, col_ranges;
     setRGSurfaceData(rgsurface, row_ranges, col_ranges);
 
+
+    //LOG(ERROR) << "BuildGeometryUVSegment 2";
 
     TopoDS_Builder builder;
 //    m_geometry_uv = TopoDS_Compound();
@@ -161,7 +164,7 @@ void CCPACSSkinSegment::BuildGeometryUVSegment(const TopoDS_Shape& loft, double 
     TopoDS_Compound resultShape;// = TopoDS_Compound();
     builder.MakeCompound(resultShape);
 
-        //LOG(ERROR) << "BuildGeometryUVSegment 4";
+    //LOG(ERROR) << "BuildGeometryUVSegment 3";
     /*
         *  Step 2/2:
         *
@@ -174,11 +177,14 @@ void CCPACSSkinSegment::BuildGeometryUVSegment(const TopoDS_Shape& loft, double 
         TrimSpanwise(rgsurface, SpanWiseBorder::Outer, vmax, 1e-4);
         TrimContourwise(rgsurface, ContourWiseBorder::Start, umin, 1e-4);
         addRGFacesToCompound(rgsurface, builder, resultShape, GetUID());
-        
+
+        //LOG(ERROR) << "BuildGeometryUVSegment 4";
         
         CTiglRectGridSurface<TrimShapeAnnotation> rgsurface2 = CTiglRectGridSurface<TrimShapeAnnotation>(loft);
         std::vector<double> row_ranges2, col_ranges2;
         setRGSurfaceData(rgsurface2, row_ranges2, col_ranges2);
+
+        //LOG(ERROR) << "BuildGeometryUVSegment 5";
 
         TrimSpanwise(rgsurface2, SpanWiseBorder::Inner, vmin, 1e-4);
         TrimSpanwise(rgsurface2, SpanWiseBorder::Outer, vmax, 1e-4);
@@ -186,6 +192,8 @@ void CCPACSSkinSegment::BuildGeometryUVSegment(const TopoDS_Shape& loft, double 
         addRGFacesToCompound(rgsurface2, builder, resultShape, GetUID());
     }
     else {
+        //LOG(ERROR) << "BuildGeometryUVSegment trim " << GetUID();
+
         TrimSpanwise(rgsurface, SpanWiseBorder::Inner, vmin, 1e-4);
         TrimSpanwise(rgsurface, SpanWiseBorder::Outer, vmax, 1e-4);
         TrimContourwise(rgsurface, ContourWiseBorder::Start, umin, 1e-4);
@@ -193,7 +201,7 @@ void CCPACSSkinSegment::BuildGeometryUVSegment(const TopoDS_Shape& loft, double 
         addRGFacesToCompound(rgsurface, builder, resultShape, GetUID());
     }
 
-        //LOG(ERROR) << "BuildGeometryUVSegment 5";
+    //LOG(ERROR) << "BuildGeometryUVSegment 6";
 
                 /*std::stringstream ss;
                 ss << "face_" << 8 << ".brep";
