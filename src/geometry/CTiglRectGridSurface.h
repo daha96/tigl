@@ -44,6 +44,15 @@ struct DefaultAnnotation
 namespace tigl
 {
 
+// the following cache is used for the contour coordinate implementation
+struct TrimShapeAnnotation
+{
+    double ccmin, ccmax; // chordwise contour coordinate bounds
+    double scmin, scmax; // spanwise contour coordinate bounds
+    bool keep = true;    // a label, specifying if the face
+                            // will be part of the resulting shape
+};
+
 /**
  * @brief The CTiglRectGridSurface class represents
  * a collection of faces arranged in a rectangular
@@ -53,7 +62,7 @@ namespace tigl
 template <typename Annotation = DefaultAnnotation>
 class CTiglRectGridSurface
 {
-private:
+public:
 
     /**
      * @brief The AnnotatedFace class is used to
@@ -66,10 +75,10 @@ private:
     {
         friend class CTiglRectGridSurface;
     public:
-        template <typename... Args>
-        AnnotatedFace(TopoDS_Face const& f, Args&&... args)
+        //template <typename... Args>
+        AnnotatedFace(TopoDS_Face const& f)//, Args&&... args)
             : face{f}
-            , annotation{std::forward<Args>(args)...}
+            //, annotation{std::forward<Args>(args)...}
         {
             BRepTools::UVBounds(face, umin, umax, vmin, vmax);
             Handle(Geom_Surface) surf = BRep_Tool::Surface(face);
@@ -83,37 +92,37 @@ private:
          * @brief UNext returns the neighboring annotated face in positive u direction
          * @return the neighboring annotated face in positive u direction
          */
-        AnnotatedFace*       UNext()       { return Pos_u_Neighbor; }
-        AnnotatedFace const* UNext() const { return Pos_u_Neighbor; }
+        TIGL_EXPORT AnnotatedFace*       UNext()       { return Pos_u_Neighbor; }
+        TIGL_EXPORT AnnotatedFace const* UNext() const { return Pos_u_Neighbor; }
 
         /**
          * @brief UPrev returns the neighboring annotated face in negative u direction
          * @return the neighboring annotated face in positive u direction
          */
-        AnnotatedFace*       UPrev()       { return Neg_u_Neighbor; }
-        AnnotatedFace const* UPrev() const { return Neg_u_Neighbor; }
+        TIGL_EXPORT AnnotatedFace*       UPrev()       { return Neg_u_Neighbor; }
+        TIGL_EXPORT AnnotatedFace const* UPrev() const { return Neg_u_Neighbor; }
 
         /**
          * @brief VNext returns the neighboring annotated face in positive v direction
          * @return the neighboring annotated face in positive v direction
          */
-        AnnotatedFace*       VNext()       { return Pos_v_Neighbor; }
-        AnnotatedFace const* VNext() const { return Pos_v_Neighbor; }
+        TIGL_EXPORT AnnotatedFace*       VNext()       { return Pos_v_Neighbor; }
+        TIGL_EXPORT AnnotatedFace const* VNext() const { return Pos_v_Neighbor; }
 
         /**
          * @brief VPrev returns the neighboring annotated face in negative v direction
          * @return the neighboring annotated face in positive vu direction
          */
-        AnnotatedFace*       VPrev()       { return Neg_v_Neighbor; }
-        AnnotatedFace const* VPrev() const { return Neg_v_Neighbor; }
+        TIGL_EXPORT AnnotatedFace*       VPrev()       { return Neg_v_Neighbor; }
+        TIGL_EXPORT AnnotatedFace const* VPrev() const { return Neg_v_Neighbor; }
 
 
         /**
          * @brief GetFace returns the wrapped TopoDS_Face
          * @return the wrapped TopoDS_Face
          */
-        TopoDS_Face       GetFace()       { return face; }
-        TopoDS_Face const GetFace() const { return face; }
+        TIGL_EXPORT TopoDS_Face       GetFace()       { return face; }
+        TIGL_EXPORT TopoDS_Face const GetFace() const { return face; }
 
         /**
          * @brief SetFace replaces the wrapped TopoDS_Face with another face
@@ -124,7 +133,7 @@ private:
          * @param f the new TopoDS_Face
          *
          */
-        void ReplaceFace(TopoDS_Face const& f) {
+        TIGL_EXPORT void ReplaceFace(TopoDS_Face const& f) {
             face = f;
             BRepTools::UVBounds(face, umin, umax, vmin, vmax);
             Handle(Geom_Surface) surf = BRep_Tool::Surface(face);
@@ -138,32 +147,32 @@ private:
          * @brief UMin returns the starting u parameter of this face
          * @return the starting u parameter of this face
          */
-        double UMin() const { return umin; };
+        TIGL_EXPORT double UMin() const { return umin; };
 
         /**
          * @brief UMax returns the ending u parameter of this face
          * @return the ending u parameter of this face
          */
-        double UMax() const { return umax; };
+        TIGL_EXPORT double UMax() const { return umax; };
 
         /**
          * @brief VMin returns the starting v parameter of this face
          * @return the starting v parameter of this face
          */
-        double VMin() const { return vmin; };
+        TIGL_EXPORT double VMin() const { return vmin; };
 
         /**
          * @brief VMax returns the ending v parameter of this face
          * @return the ending v parameter of this face
          */
-        double VMax() const { return vmax; };
+        TIGL_EXPORT double VMax() const { return vmax; };
 
         /**
          * @brief GetAnnotation returns the custom annotation associated with this face
          * @return the custom annotation associated with this face
          */
-        Annotation&       GetAnnotation()       { return annotation; };
-        Annotation const& GetAnnotation() const { return annotation; };
+        TIGL_EXPORT Annotation&       GetAnnotation()       { return annotation; };
+        TIGL_EXPORT Annotation const& GetAnnotation() const { return annotation; };
 
     private:
         TopoDS_Face face;
@@ -190,10 +199,10 @@ public:
      * @param args arguments to be forwarded to the Annotation class of each
      * face.
      */
-    template <typename... Args>
-    CTiglRectGridSurface(TopoDS_Shape const& shape, Args&&... args)
+    //template <typename... Args>
+    TIGL_EXPORT CTiglRectGridSurface(TopoDS_Shape const& shape)//, Args&&... args)
     {
-        SetShape(shape, std::forward<Args>(args)...);
+        SetShape(shape);//, std::forward<Args>(args)...);
     }
 
     /**
@@ -202,23 +211,23 @@ public:
      * @param args arguments to be forwarded to the Annotation class of each
      * face.
      */
-    template <typename... Args>
-    void SetShape(TopoDS_Shape const& shape, Args&&... args)
+    //template <typename... Args>
+    TIGL_EXPORT void SetShape(TopoDS_Shape const& shape)//, Args&&... args)
     {
         TopTools_IndexedMapOfShape faceMap;
         TopExp::MapShapes(shape, TopAbs_FACE, faceMap);
         for (int i = 1; i <= faceMap.Extent(); i++) {
             TopoDS_Face current = TopoDS::Face(faceMap(i));
-            face_infos.emplace_back(AnnotatedFace(current, std::forward<Args>(args)...));
+            face_infos.emplace_back(AnnotatedFace(current));//, std::forward<Args>(args)...));
         }
         connect_faces();
     }
 
     // CTiglRectGridSurface is move-only, because internally some pointers are stored.
-    CTiglRectGridSurface(CTiglRectGridSurface const&) = delete;
-    CTiglRectGridSurface& operator=(CTiglRectGridSurface const&) = delete;
-    CTiglRectGridSurface(CTiglRectGridSurface&&) = default;
-    CTiglRectGridSurface& operator=(CTiglRectGridSurface&&) = default;
+    TIGL_EXPORT CTiglRectGridSurface(CTiglRectGridSurface const&) = delete;
+    TIGL_EXPORT CTiglRectGridSurface& operator=(CTiglRectGridSurface const&) = delete;
+    TIGL_EXPORT CTiglRectGridSurface(CTiglRectGridSurface&&) = default;
+    TIGL_EXPORT CTiglRectGridSurface& operator=(CTiglRectGridSurface&&) = default;
 
     /**
      * @brief Root returns the root face of the rectangular grid, which is one of its corners
@@ -238,13 +247,13 @@ public:
      * @brief NRows number of rows
      * @return number of rows
      */
-    size_t NRows() const { return nrows; };
+    TIGL_EXPORT size_t NRows() const { return nrows; };
 
     /**
      * @brief NCols number of columns
      * @return number of columns
      */
-    size_t NCols() const { return ncols; };
+    TIGL_EXPORT size_t NCols() const { return ncols; };
 
     /**
      * @brief GetParameterRanges sums all parameter ranges for all rows and columns.
@@ -258,7 +267,7 @@ public:
      * @param row_ranges a reference to a vector for storing the v-parameter ranges
      * @param col_ranges a reference to a vector for storing the u-parameter ranges
      */
-    void GetParameterRanges(std::vector<double>& row_ranges, std::vector<double>& col_ranges)
+    TIGL_EXPORT void GetParameterRanges(std::vector<double>& row_ranges, std::vector<double>& col_ranges)
     {
         row_ranges = std::vector<double>(nrows, 0.);
         col_ranges = std::vector<double>(ncols, 0.);
@@ -333,7 +342,7 @@ private:
                 for(AnnotatedFace* current = &face; current->UNext(); current = current->UNext(), ++ncols_tmp)
                 {}
                 if (ncols_tmp != ncols ) {
-                    throw CTiglError("The Input Shape is not a rectangular grid of faces");
+                    throw CTiglError("The Input Shape is not a rectangular grid of faces (ncols_tmp != ncols)");
                 }
             }
             if (!face.VPrev()) {
@@ -342,7 +351,7 @@ private:
                 for(AnnotatedFace* current = &face; current->VNext(); current = current->VNext(), ++nrows_tmp)
                 {}
                 if (nrows_tmp != nrows ) {
-                    throw CTiglError("The Input Shape is not a rectangular grid of faces");
+                    throw CTiglError("The Input Shape is not a rectangular grid of faces (nrows_tmp != nrows)");
                 }
             }
         }

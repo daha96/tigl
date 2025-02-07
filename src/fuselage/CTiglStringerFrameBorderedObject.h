@@ -17,7 +17,7 @@
 #pragma once
 
 #include <boost/optional.hpp>
-#include <boost/variant.hpp>
+//#include <boost/variant.hpp>
 #include <TopoDS_Shape.hxx>
 #include <gp_Ax1.hxx>
 
@@ -41,7 +41,7 @@ public:
     TIGL_EXPORT CTiglStringerFrameBorderedObject(const CTiglUIDManager& uidMgr, const CTiglRelativelyPositionedComponent* parent,
                                                  std::string& startFrameUID, std::string& endFrameUID,
                                                  std::string& startStringerUID,
-                                                 boost::variant<std::string&, boost::optional<std::string>&> endStringerUID);
+                                                 boost::optional<std::string>& endStringerUID);
 
     TIGL_EXPORT TopoDS_Shape GetGeometry(TiglCoordinateSystem referenceCS = GLOBAL_COORDINATE_SYSTEM) const;
 
@@ -49,10 +49,17 @@ public:
     TIGL_EXPORT bool Contains(const TopoDS_Edge& edge) const; // in global coords
     TIGL_EXPORT bool Contains(const gp_Pnt& point) const; // in global coords
 
+    TIGL_EXPORT gp_Ax1 GetBorder_sFrame_sStringer() const;
+    TIGL_EXPORT gp_Ax1 GetBorder_eFrame_sStringer() const;
+    TIGL_EXPORT gp_Ax1 GetBorder_sFrame_eStringer() const;
+    TIGL_EXPORT gp_Ax1 GetBorder_eFrame_eStringer() const;
+
 protected:
+
     void InvalidateShapes(const boost::optional<std::string>& source) const;
 
 private:
+
     struct BorderCache {
         gp_Ax1 sFrame_sStringer;
         gp_Ax1 sFrame_eStringer;
@@ -63,15 +70,14 @@ private:
     void BuildGeometry(TopoDS_Shape& cache) const;
     void UpdateBorders(BorderCache& cache) const;
     void UpdateBorder(gp_Ax1& b, TopoDS_Shape s1, TopoDS_Shape s2) const;
-    std::string GetEndStringerUid() const;
+    //std::string GetEndStringerUid() const;
 
-private:
     const CTiglUIDManager& m_uidMgr;
     const CTiglRelativelyPositionedComponent* m_parent;
     std::string& m_startFrameUID;
     std::string& m_endFrameUID;
     std::string& m_startStringerUID;
-    boost::variant<std::string&, boost::optional<std::string>&> m_endStringerUID;
+    boost::optional<std::string>& m_endStringerUID;
 
     Cache<BorderCache, CTiglStringerFrameBorderedObject> m_borderCache;
     Cache<TopoDS_Shape, CTiglStringerFrameBorderedObject> m_geometry;

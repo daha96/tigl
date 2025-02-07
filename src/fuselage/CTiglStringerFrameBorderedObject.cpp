@@ -39,7 +39,7 @@ namespace tigl
 {
 CTiglStringerFrameBorderedObject::CTiglStringerFrameBorderedObject(
     const CTiglUIDManager& uidMgr, const CTiglRelativelyPositionedComponent* parent, std::string& startFrameUID, std::string& endFrameUID,
-    std::string& startStringerUID, boost::variant<std::string&, boost::optional<std::string>&> endStringerUID)
+    std::string& startStringerUID, boost::optional<std::string>& endStringerUID)
     : m_uidMgr(uidMgr)
     , m_parent(parent)
     , m_startFrameUID(startFrameUID)
@@ -89,23 +89,37 @@ bool CTiglStringerFrameBorderedObject::Contains(const TopoDS_Edge& edge) const
 bool CTiglStringerFrameBorderedObject::Contains(const gp_Pnt& point) const
 {
     const double _45DegInRad = Radians(45.0);
-
+    const double _90DegInRad = Radians(89.0);
     const CTiglStringerFrameBorderedObject::BorderCache& c = *m_borderCache;
-    gp_Ax1 test1(c.sFrame_sStringer.Location(), gp_Vec(c.sFrame_sStringer.Location(), point));
-    if (test1.Angle(c.sFrame_sStringer) < _45DegInRad) {
-        gp_Ax1 test2(c.sFrame_eStringer.Location(), gp_Vec(c.sFrame_eStringer.Location(), point));
-        if (test2.Angle(c.sFrame_eStringer) < _45DegInRad) {
-            gp_Ax1 test3(c.eFrame_sStringer.Location(), gp_Vec(c.eFrame_sStringer.Location(), point));
-            if (test3.Angle(c.eFrame_sStringer) < _45DegInRad) {
-                gp_Ax1 test4(c.eFrame_eStringer.Location(), gp_Vec(c.eFrame_eStringer.Location(), point));
-                if (test4.Angle(c.eFrame_eStringer) < _45DegInRad) {
-                    return true;
+
+    if (m_endStringerUID.has_value()) {
+        gp_Ax1 test1(c.sFrame_sStringer.Location(), gp_Vec(c.sFrame_sStringer.Location(), point));
+        if (test1.Angle(c.sFrame_sStringer) < _45DegInRad) {
+            gp_Ax1 test2(c.sFrame_eStringer.Location(), gp_Vec(c.sFrame_eStringer.Location(), point));
+            if (test2.Angle(c.sFrame_eStringer) < _45DegInRad) {
+                gp_Ax1 test3(c.eFrame_sStringer.Location(), gp_Vec(c.eFrame_sStringer.Location(), point));
+                if (test3.Angle(c.eFrame_sStringer) < _45DegInRad) {
+                    gp_Ax1 test4(c.eFrame_eStringer.Location(), gp_Vec(c.eFrame_eStringer.Location(), point));
+                    if (test4.Angle(c.eFrame_eStringer) < _45DegInRad) {
+                        return true;
+                    }
                 }
             }
         }
-    }
 
-    return false;
+        return false;
+    }
+    else {
+        gp_Ax1 test1(c.sFrame_sStringer.Location(), gp_Vec(c.sFrame_sStringer.Location(), point));
+        if (test1.Angle(c.sFrame_sStringer) < _90DegInRad) {
+            gp_Ax1 test3(c.eFrame_sStringer.Location(), gp_Vec(c.eFrame_sStringer.Location(), point));
+            if (test3.Angle(c.eFrame_sStringer) < _90DegInRad) {
+                return true;
+            }            
+        }
+
+        return false;
+    }
 }
 
 void CTiglStringerFrameBorderedObject::BuildGeometry(TopoDS_Shape& cache) const
@@ -113,17 +127,24 @@ void CTiglStringerFrameBorderedObject::BuildGeometry(TopoDS_Shape& cache) const
     CCPACSFrame& sFrame               = m_uidMgr.ResolveObject<CCPACSFrame>(m_startFrameUID);
     CCPACSFrame& eFrame               = m_uidMgr.ResolveObject<CCPACSFrame>(m_endFrameUID);
     CCPACSFuselageStringer& sStringer = m_uidMgr.ResolveObject<CCPACSFuselageStringer>(m_startStringerUID);
-    CCPACSFuselageStringer& eStringer = m_uidMgr.ResolveObject<CCPACSFuselageStringer>(GetEndStringerUid());
 
     // create cut geometry from stringers and frames
     TopoDS_Builder builder;
     TopoDS_Compound cutCompound;
     builder.MakeCompound(cutCompound);
 
-    builder.Add(cutCompound, sFrame.GetCutGeometry(FUSELAGE_COORDINATE_SYSTEM));
-    builder.Add(cutCompound, eFrame.GetCutGeometry(FUSELAGE_COORDINATE_SYSTEM));
-    builder.Add(cutCompound, sStringer.GetCutGeometry(FUSELAGE_COORDINATE_SYSTEM));
-    builder.Add(cutCompound, eStringer.GetCutGeometry(FUSELAGE_COORDINATE_SYSTEM));
+    if (m_endStringerUID.has_value()) {
+        CCPACSFuselageStringer& eStringer = m_uidMgr.ResolveObject<CCPACSFuselageStringer>(m_endStringerUID.value());
+
+        builder.Add(cutCompound, sFrame.GetCutGeometry(FUSELAGE_COORDINATE_SYSTEM));
+        builder.Add(cutCompound, eFrame.GetCutGeometry(FUSELAGE_COORDINATE_SYSTEM));
+        builder.Add(cutCompound, sStringer.GetCutGeometry(FUSELAGE_COORDINATE_SYSTEM));
+        builder.Add(cutCompound, eStringer.GetCutGeometry(FUSELAGE_COORDINATE_SYSTEM));
+    }
+    else {
+        builder.Add(cutCompound, sFrame.GetCutGeometry(FUSELAGE_COORDINATE_SYSTEM));
+        builder.Add(cutCompound, eFrame.GetCutGeometry(FUSELAGE_COORDINATE_SYSTEM));
+    }
 
     // split fuselage loft
 
@@ -160,19 +181,31 @@ void CTiglStringerFrameBorderedObject::UpdateBorders(BorderCache& cache) const
     CCPACSFrame& sFrame               = m_uidMgr.ResolveObject<CCPACSFrame>(m_startFrameUID);
     CCPACSFrame& eFrame               = m_uidMgr.ResolveObject<CCPACSFrame>(m_endFrameUID);
     CCPACSFuselageStringer& sStringer = m_uidMgr.ResolveObject<CCPACSFuselageStringer>(m_startStringerUID);
-    CCPACSFuselageStringer& eStringer = m_uidMgr.ResolveObject<CCPACSFuselageStringer>(GetEndStringerUid());
+    
+    if (m_endStringerUID.has_value()) {
+        CCPACSFuselageStringer& eStringer = m_uidMgr.ResolveObject<CCPACSFuselageStringer>(m_endStringerUID.value());
 
-    // get the intersection Points between stringer and frames
-    UpdateBorder(cache.sFrame_sStringer, sFrame.GetGeometry(true), sStringer.GetGeometry(true));
-    UpdateBorder(cache.sFrame_eStringer, sFrame.GetGeometry(true), eStringer.GetGeometry(true));
-    UpdateBorder(cache.eFrame_sStringer, eFrame.GetGeometry(true), sStringer.GetGeometry(true));
-    UpdateBorder(cache.eFrame_eStringer, eFrame.GetGeometry(true), eStringer.GetGeometry(true));
+        // get the intersection Points between stringer and frames
+        UpdateBorder(cache.sFrame_eStringer, sFrame.GetGeometry(true), eStringer.GetGeometry(true));
+        UpdateBorder(cache.sFrame_sStringer, sFrame.GetGeometry(true), sStringer.GetGeometry(true));
+        UpdateBorder(cache.eFrame_eStringer, eFrame.GetGeometry(true), eStringer.GetGeometry(true));
+        UpdateBorder(cache.eFrame_sStringer, eFrame.GetGeometry(true), sStringer.GetGeometry(true));
 
-    // generate directions to the opposite intersection point
-    cache.sFrame_sStringer.SetDirection(gp_Vec(cache.sFrame_sStringer.Location(), cache.eFrame_eStringer.Location()));
-    cache.sFrame_eStringer.SetDirection(gp_Vec(cache.sFrame_eStringer.Location(), cache.eFrame_sStringer.Location()));
-    cache.eFrame_sStringer.SetDirection(gp_Vec(cache.eFrame_sStringer.Location(), cache.sFrame_eStringer.Location()));
-    cache.eFrame_eStringer.SetDirection(gp_Vec(cache.eFrame_eStringer.Location(), cache.sFrame_sStringer.Location()));
+        // generate directions to the opposite intersection point
+        cache.sFrame_sStringer.SetDirection(gp_Vec(cache.sFrame_sStringer.Location(), cache.eFrame_eStringer.Location()));
+        cache.sFrame_eStringer.SetDirection(gp_Vec(cache.sFrame_eStringer.Location(), cache.eFrame_sStringer.Location()));
+        cache.eFrame_sStringer.SetDirection(gp_Vec(cache.eFrame_sStringer.Location(), cache.sFrame_eStringer.Location()));
+        cache.eFrame_eStringer.SetDirection(gp_Vec(cache.eFrame_eStringer.Location(), cache.sFrame_sStringer.Location()));
+    }
+    else {
+        // get the intersection Points between stringer and frames
+        UpdateBorder(cache.sFrame_sStringer, sFrame.GetGeometry(true), sStringer.GetGeometry(true));
+        UpdateBorder(cache.eFrame_sStringer, eFrame.GetGeometry(true), sStringer.GetGeometry(true));
+
+        // generate directions to the opposite intersection point
+        cache.sFrame_sStringer.SetDirection(gp_Vec(cache.sFrame_sStringer.Location(), cache.eFrame_sStringer.Location()));
+        cache.eFrame_sStringer.SetDirection(gp_Vec(cache.eFrame_sStringer.Location(), cache.sFrame_sStringer.Location()));
+    }
 }
 
 void CTiglStringerFrameBorderedObject::UpdateBorder(gp_Ax1& b, TopoDS_Shape frame, TopoDS_Shape stringer) const
@@ -187,7 +220,37 @@ void CTiglStringerFrameBorderedObject::UpdateBorder(gp_Ax1& b, TopoDS_Shape fram
     throw CTiglError("No intersection between frame and stringer");
 }
 
-std::string CTiglStringerFrameBorderedObject::GetEndStringerUid() const
+gp_Ax1 CTiglStringerFrameBorderedObject::GetBorder_sFrame_sStringer() const
+{
+    const CTiglStringerFrameBorderedObject::BorderCache& c = *m_borderCache;
+    return c.sFrame_sStringer;
+}
+    
+gp_Ax1 CTiglStringerFrameBorderedObject::GetBorder_eFrame_sStringer() const
+{
+    const CTiglStringerFrameBorderedObject::BorderCache& c = *m_borderCache;
+    return c.eFrame_sStringer;
+}
+    
+gp_Ax1 CTiglStringerFrameBorderedObject::GetBorder_sFrame_eStringer() const
+{
+    const CTiglStringerFrameBorderedObject::BorderCache& c = *m_borderCache;
+    return c.sFrame_eStringer;
+}
+    
+gp_Ax1 CTiglStringerFrameBorderedObject::GetBorder_eFrame_eStringer() const
+{
+    const CTiglStringerFrameBorderedObject::BorderCache& c = *m_borderCache;
+    return c.eFrame_eStringer;
+}
+/*
+CTiglStringerFrameBorderedObject::BorderCache& CTiglStringerFrameBorderedObject::GetBorderCache() const
+{
+    //const CTiglStringerFrameBorderedObject::BorderCache& c = *m_borderCache;
+    return const_cast<CTiglStringerFrameBorderedObject::BorderCache&>(static_cast<const CTiglStringerFrameBorderedObject::BorderCache&>(m_borderCache.value()));
+}
+
+/*std::string CTiglStringerFrameBorderedObject::GetEndStringerUid() const
 {
     struct Visitor : boost::static_visitor<std::string> {
         std::string operator()(const std::string& s)
@@ -199,7 +262,7 @@ std::string CTiglStringerFrameBorderedObject::GetEndStringerUid() const
             return s.value(); // TODO(bgruber): we do not yet support empty end stringer uids
         }
     } v;
-    return m_endStringerUID.apply_visitor(v);
-}
+    return m_endStringerUID.value();
+}*/
 
 } // namespace tigl

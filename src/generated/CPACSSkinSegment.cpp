@@ -109,9 +109,9 @@ namespace generated
             }
             if (m_uidMgr && !m_sheetElementUID.empty()) m_uidMgr->RegisterReference(m_sheetElementUID, *this);
         }
-        else {
+        /*else {
             LOG(ERROR) << "Required element sheetElementUID is missing at xpath " << xpath;
-        }
+        }*/
 
         // read element startFrameUID
         if (tixi::TixiCheckElement(tixiHandle, xpath + "/startFrameUID")) {

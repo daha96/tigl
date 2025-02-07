@@ -51,7 +51,13 @@ CCPACSWingCell& CCPACSWingShell::GetCell(int index)
     // forward call to const method
     return const_cast<CCPACSWingCell&>(static_cast<const CCPACSWingShell&>(*this).GetCell(index));
 }
-
+/*
+// Gets a cell by uid. 
+CCPACSWingCell& CCPACSWingShell::GetCell(const std::string& cellUID)
+{
+   return m_cells->GetCell(cellUID);
+}
+*/
 const CCPACSMaterialDefinition& CCPACSWingShell::GetMaterial() const
 {
     return m_skin.GetMaterial();
