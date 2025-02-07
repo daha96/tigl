@@ -106,7 +106,7 @@ bool CTiglStringerFrameBorderedObject::Contains(const gp_Pnt& point) const
     const double _90DegInRad = Radians(89.0);
     const CTiglStringerFrameBorderedObject::BorderCache& c = *m_borderCache;
 
-    if (m_endStringerUID.has_value()) {
+    if (GetEndStringerUid().has_value()) {
         gp_Ax1 test1(c.sFrame_sStringer.Location(), gp_Vec(c.sFrame_sStringer.Location(), point));
         if (test1.Angle(c.sFrame_sStringer) < _45DegInRad) {
             gp_Ax1 test2(c.sFrame_eStringer.Location(), gp_Vec(c.sFrame_eStringer.Location(), point));
@@ -147,8 +147,8 @@ void CTiglStringerFrameBorderedObject::BuildGeometry(TopoDS_Shape& cache) const
     TopoDS_Compound cutCompound;
     builder.MakeCompound(cutCompound);
 
-    if (m_endStringerUID.has_value()) {
-        CCPACSFuselageStringer& eStringer = m_uidMgr.ResolveObject<CCPACSFuselageStringer>(m_endStringerUID.value());
+    if (GetEndStringerUid().has_value()) {
+        CCPACSFuselageStringer& eStringer = m_uidMgr.ResolveObject<CCPACSFuselageStringer>(GetEndStringerUid().value());
 
         builder.Add(cutCompound, sFrame.GetCutGeometry(FUSELAGE_COORDINATE_SYSTEM));
         builder.Add(cutCompound, eFrame.GetCutGeometry(FUSELAGE_COORDINATE_SYSTEM));
@@ -196,8 +196,8 @@ void CTiglStringerFrameBorderedObject::UpdateBorders(BorderCache& cache) const
     CCPACSFrame& eFrame               = m_uidMgr.ResolveObject<CCPACSFrame>(m_endFrameUID);
     CCPACSFuselageStringer& sStringer = m_uidMgr.ResolveObject<CCPACSFuselageStringer>(m_startStringerUID);
 
-    if (m_endStringerUID.has_value()) {
-        CCPACSFuselageStringer& eStringer = m_uidMgr.ResolveObject<CCPACSFuselageStringer>(m_endStringerUID.value());
+    if (GetEndStringerUid().has_value()) {
+        CCPACSFuselageStringer& eStringer = m_uidMgr.ResolveObject<CCPACSFuselageStringer>(GetEndStringerUid().value());
 
         // get the intersection Points between stringer and frames
         UpdateBorder(cache.sFrame_eStringer, sFrame.GetGeometry(true), eStringer.GetGeometry(true));
@@ -263,20 +263,20 @@ CTiglStringerFrameBorderedObject::BorderCache& CTiglStringerFrameBorderedObject:
     //const CTiglStringerFrameBorderedObject::BorderCache& c = *m_borderCache;
     return const_cast<CTiglStringerFrameBorderedObject::BorderCache&>(static_cast<const CTiglStringerFrameBorderedObject::BorderCache&>(m_borderCache.value()));
 }
-
-/*std::string CTiglStringerFrameBorderedObject::GetEndStringerUid() const
+*/
+boost::optional<std::string> CTiglStringerFrameBorderedObject::GetEndStringerUid() const
 {
-    struct Visitor : boost::static_visitor<std::string> {
-        std::string operator()(const std::string& s)
+    struct Visitor : boost::static_visitor<boost::optional<std::string>> {
+        boost::optional<std::string> operator()(const std::string& s)
         {
-            return s;
+            return boost::optional<std::string>(s);
         }
-        std::string operator()(const boost::optional<std::string>& s)
+        boost::optional<std::string> operator()(const boost::optional<std::string>& s)
         {
-            return s.value(); // TODO(bgruber): we do not yet support empty end stringer uids
+            return s;//.value(); // TODO(bgruber): we do not yet support empty end stringer uids
         }
     } v;
-    return m_endStringerUID.value();
-}*/
+    return m_endStringerUID.apply_visitor(v);
+}
 
 } // namespace tigl
