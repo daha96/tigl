@@ -122,9 +122,9 @@ namespace generated
             }
             if (m_uidMgr && !m_structuralElementUID.empty()) m_uidMgr->RegisterReference(m_structuralElementUID, *this);
         }
-        else {
+        /*else {
             LOG(ERROR) << "Required element structuralElementUID is missing at xpath " << xpath;
-        }
+        }*/
 
         // read element positionX
         if (tixi::TixiCheckElement(tixiHandle, xpath + "/positionX")) {

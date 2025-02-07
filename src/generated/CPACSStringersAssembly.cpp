@@ -134,6 +134,40 @@ namespace generated
         }
         throw CTiglError("Element not found");
     }
+    
+        int CPACSStringersAssembly::GetStringerCount() const
+{
+    return static_cast<int>(m_stringers.size());
+}
+
+CCPACSFuselageStringer& CPACSStringersAssembly::GetStringer(int index) const
+{
+    const int idx = index - 1;
+    if (idx < 0 || idx >= GetStringerCount()) {
+        LOG(ERROR) << "Invalid index value";
+        throw CTiglError("Invalid index value in CPACSStringersAssembly::GetStringer", TIGL_INDEX_ERROR);
+    }
+    return (*(m_stringers[idx]));
+}
+
+CCPACSFuselageStringer& CPACSStringersAssembly::GetStringer(const std::string& UID) const
+{
+    return *m_stringers[GetStringerIndex(UID)-1];
+}
+
+int CPACSStringersAssembly::GetStringerIndex(const std::string& UID) const
+{
+    for (int i=0; i < GetStringerCount(); i++) {
+        const std::string tmpUID(m_stringers[i]->GetUID());
+        if (tmpUID == UID) {
+            return i+1;
+        }
+    }
+
+    // UID not there
+    throw CTiglError("Invalid UID in CPACSStringersAssembly::GetStringerIndex", TIGL_UID_ERROR);
+}
+
 
 } // namespace generated
 } // namespace tigl

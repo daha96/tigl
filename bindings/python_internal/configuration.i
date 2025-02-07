@@ -89,6 +89,12 @@
 #include "generated/CPACSLateralCap_placement.h"
 #include "generated/CPACSLateralCap.h"
 #include "generated/CPACSBoundingElementUIDs.h"
+
+#include "generated/CPACSFrame.h"
+#include "CCPACSFrame.h"
+#include "generated/CPACSStringer.h"
+#include "CCPACSFuselageStringer.h"
+
 #include "generated/CPACSStructuralWallElement.h"
 #include "generated/CPACSStructuralWallElements.h"
 #include "generated/CPACSWalls.h"
@@ -98,9 +104,11 @@
 #include "generated/CPACSWallSegment.h"
 #include "generated/CPACSWallSegments.h"
 #include "generated/CPACSUIDSequence.h"
+#include "generated/CPACSWing.h"
 #include "CCPACSDucts.h"
 #include "CCPACSDuctAssembly.h"
 #include "CCPACSDuct.h"
+#include "CCPACSFuselageSegments.h"
 %}
 
 %feature("autodoc", "3");
@@ -130,6 +138,7 @@
 %boost_optional(tigl::generated::CPACSSparCells)
 %boost_optional(tigl::CCPACSGuideCurves)
 %boost_optional(tigl::CCPACSPositionings)
+%boost_optional(tigl::CCPACSPositioning)
 %boost_optional(tigl::CCPACSWingComponentSegments)
 %boost_optional(tigl::CCPACSWingRibsDefinitions)
 %boost_optional(tigl::CCPACSWingSpars)
@@ -142,6 +151,7 @@
 %boost_optional(tigl::generated::CPACSRotorHub)
 %boost_optional(tigl::TiglRotorHubType)
 %boost_optional(tigl::generated::CPACSRotor_type)
+%boost_optional(tigl::ITiglFuselageDuctStructure)
 %boost_optional(tigl::CCPACSFuselageStructure)
 %boost_optional(tigl::generated::CPACSLinkToFileType_format)
 %boost_optional(tigl::CCPACSWingCells)
@@ -298,7 +308,7 @@ namespace tigl
 // --------------- Fuselage structure -----------------//
 
 %apply double *OUTPUT { double* eta, double* xsi };
-%ignore tigl::CTiglStringerFrameBorderedObject;
+//%ignore tigl::CTiglStringerFrameBorderedObject;
 %include "CTiglStringerFrameBorderedObject.h"
 %include "generated/CPACSSkinSegment.h"
 %include "CCPACSSkinSegment.h"
@@ -321,15 +331,26 @@ namespace tigl
 %include "CCPACSCrossBeamStrutAssemblyPosition.h"
 %include "generated/CPACSPressureBulkheadAssemblyPosition.h"
 %include "CCPACSPressureBulkheadAssemblyPosition.h"
+
+%include "generated/CPACSFrame.h"
+%include "CCPACSFrame.h"
+
 %include "generated/CPACSFramesAssembly.h"
 %include "CCPACSFramesAssembly.h"
+
+%include "generated/CPACSStringer.h"
+%include "CCPACSFuselageStringer.h"
+
 %include "generated/CPACSStringersAssembly.h"
 %include "CCPACSStringersAssembly.h"
+
 %include "generated/CPACSSkinSegments.h"
 %include "generated/CPACSSkin.h"
+%include "ITiglFuselageDuctStructure.h"
 %include "generated/CPACSFuselageStructure.h"
 %include "CCPACSFuselageStructure.h"
 
+%include "CCPACSFuselageSegments.h"
 
 %include "generated/CPACSWingSkin.h"
 %include "CPACSRotor_type.h"
@@ -402,6 +423,7 @@ class CCPACSWingRibsPositioning;
 %include "CCPACSWingComponentSegments.h"
 %include "generated/CPACSPositionings.h"
 %include "CCPACSPositionings.h"
+%include "CCPACSPositioning.h"
 // We have to rename the enums since they collide with those from tigl.h
 %rename(GuideCurve_C0) tigl::generated::C0;
 %rename(GuideCurve_C1_from_previous) tigl::generated::C1_from_previous;
@@ -571,6 +593,8 @@ public:
     void SetParentComponents();
     const ShapeContainerType& GetShapeContainer() const;
     void Clear();
+
+    void UpdateObjectUID(const std::string& oldUID, const std::string& newUID);
 };
 } // namespace tigl
 
