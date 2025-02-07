@@ -25,7 +25,7 @@ namespace tigl
 {
 CCPACSDoorAssemblyPosition::CCPACSDoorAssemblyPosition(CCPACSCargoDoorsAssembly* parent, CTiglUIDManager* uidMgr)
     : generated::CPACSDoorAssemblyPosition(parent, uidMgr)
-    , CTiglStringerFrameBorderedObject(*uidMgr, parent->GetParent()->GetParent(), generated::CPACSDoorAssemblyPosition::m_startFrameUID, generated::CPACSDoorAssemblyPosition::m_endFrameUID, generated::CPACSDoorAssemblyPosition::m_startStringerUID, boost::optional<std::string>(generated::CPACSDoorAssemblyPosition::m_endStringerUID))
+    , CTiglStringerFrameBorderedObject(*uidMgr, parent->GetParent()->GetParent(), generated::CPACSDoorAssemblyPosition::m_startFrameUID, generated::CPACSDoorAssemblyPosition::m_endFrameUID, generated::CPACSDoorAssemblyPosition::m_startStringerUID, generated::CPACSDoorAssemblyPosition::m_endStringerUID)
 {
 }
 
