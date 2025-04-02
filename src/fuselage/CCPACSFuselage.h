@@ -125,9 +125,14 @@ public:
     // Returns all guide curve points
     TIGL_EXPORT std::vector<gp_Pnt> GetGuideCurvePoints() const;
 
+    // Gets the loft of a geometric component
+    TIGL_EXPORT PNamedShape GetLoftOpen() const {return *cleanLoftOpen;}
+
 protected:
 
-    void BuildCleanLoft(PNamedShape& cache) const;
+    void BuildCleanLoftAll(PNamedShape& cache, bool solid) const;
+    void BuildCleanLoft(PNamedShape& cache) const {BuildCleanLoftAll(cache, true);}
+    void BuildCleanLoftOpen(PNamedShape& cache) const {BuildCleanLoftAll(cache, false);}
 
     // Cleanup routine
     void Cleanup();
@@ -148,6 +153,7 @@ private:
     FusedElementsContainerType fusedElements;        /**< Stores already fused segments */
 
     Cache<PNamedShape, CCPACSFuselage> cleanLoft; /**< Stores the loft with cutouts (e.g. ducts) */
+    Cache<PNamedShape, CCPACSFuselage> cleanLoftOpen; /**< Stores the loft with cutouts (e.g. ducts) */
 
     TopoDS_Compound            aCompound;
     BRep_Builder               aBuilder;

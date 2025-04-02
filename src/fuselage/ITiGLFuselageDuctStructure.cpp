@@ -45,7 +45,9 @@ void ITiglFuselageDuctStructure::Invalidate() const
 
 void ITiglFuselageDuctStructure::StoreLoft(TopoDS_Shape& cache) const
 {
-    cache = m_parent->GetTransformationMatrix().Inverted().Transform(m_parent->GetLoft()->DeepCopy()->Shape());
+    //cache = m_parent->GetTransformationMatrix().Inverted().Transform(m_parent->GetLoft()->DeepCopy()->Shape());
+    const CCPACSFuselage* parent = static_cast<const CCPACSFuselage*>(m_parent);
+    cache = parent->GetTransformationMatrix().Inverted().Transform(parent->GetLoftOpen()->DeepCopy()->Shape());
 }
 
 TopoDS_Shape const& ITiglFuselageDuctStructure::GetLoft() const
