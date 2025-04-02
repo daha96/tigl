@@ -69,6 +69,7 @@ CCPACSFuselage::CCPACSFuselage(CCPACSFuselages* parent, CTiglUIDManager* uidMgr)
     : generated::CPACSFuselage(parent, uidMgr)
     , CTiglRelativelyPositionedComponent(&m_parentUID, &m_transformation, &m_symmetry)
     , cleanLoft(*this, &CCPACSFuselage::BuildCleanLoft)
+    , cleanLoftOpen(*this, &CCPACSFuselage::BuildCleanLoftOpen)
 {
     Cleanup();
     if (parent->IsParent<CCPACSAircraftModel>()) {
@@ -270,10 +271,10 @@ PNamedShape CCPACSFuselage::BuildLoft() const
     return GetConfiguration().GetDucts()->LoftWithDuctCutouts(*cleanLoft, GetUID());
 }
 
-void CCPACSFuselage::BuildCleanLoft(PNamedShape& cache) const
+void CCPACSFuselage::BuildCleanLoftAll(PNamedShape& cache, bool solid) const
 {
     TiglContinuity cont = m_segments.GetSegment(1).GetContinuity();
-    Standard_Boolean smooth = (cont == ::C0? false : true);
+    Standard_Boolean smooth = true;//(cont == ::C0? false : true);
 
     CTiglMakeLoft lofter;
     // add profiles
@@ -285,7 +286,7 @@ void CCPACSFuselage::BuildCleanLoft(PNamedShape& cache) const
     // add guides
     lofter.addGuides(m_segments.GetGuideCurveWires());
 
-    lofter.setMakeSolid(true);
+    lofter.setMakeSolid(solid);
     lofter.setMakeSmooth(smooth);
 
     TopoDS_Shape loftShape =  lofter.Shape();
@@ -293,7 +294,9 @@ void CCPACSFuselage::BuildCleanLoft(PNamedShape& cache) const
     std::string loftName = GetUID();
     std::string loftShortName = GetShortShapeName();
     cache = std::make_shared<CNamedShape>(loftShape, loftName.c_str(), loftShortName.c_str());
-    SetFaceTraits(cache);
+    if (solid) {
+        SetFaceTraits(cache);
+    }    
 }
 
 // Get the positioning transformation for a given section index
