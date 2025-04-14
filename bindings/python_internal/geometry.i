@@ -33,6 +33,7 @@
 
 
 %import TopoDS.i
+%import TopTools.i
 %import Geom.i
 
 %import tmath.i
