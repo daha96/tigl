@@ -273,8 +273,8 @@ PNamedShape CCPACSFuselage::BuildLoft() const
 
 void CCPACSFuselage::BuildCleanLoftAll(PNamedShape& cache, bool solid) const
 {
-    TiglContinuity cont = m_segments.GetSegment(1).GetContinuity();
-    Standard_Boolean smooth = true;//(cont == ::C0? false : true);
+    TiglContinuity cont = GetShapeContinuity();
+    Standard_Boolean smooth = (cont == ::C0? false : true);
 
     CTiglMakeLoft lofter;
     // add profiles
