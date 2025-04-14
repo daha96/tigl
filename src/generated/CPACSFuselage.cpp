@@ -124,6 +124,24 @@ namespace generated
             }
         }
 
+        
+        
+        if (tixi::TixiCheckElement(tixiHandle, xpath + "/shapeContinuity")) {
+            std::string shapeContinuityStr = tixi::TixiGetElement<std::string>(tixiHandle, xpath + "/shapeContinuity");
+
+            if (shapeContinuityStr == "C0") {
+                m_shapeContinuity = ::C0;
+            }
+            else if (shapeContinuityStr == "C2") {
+                m_shapeContinuity = ::C2;
+            }
+            else {
+                LOG(ERROR) << "Unknown value for element shapeContinuity " << shapeContinuityStr << " at xpath " << xpath;
+                m_shapeContinuity = ::C2;
+            }
+        }
+
+
         // read element parentUID
         if (tixi::TixiCheckElement(tixiHandle, xpath + "/parentUID")) {
             m_parentUID = tixi::TixiGetElement<std::string>(tixiHandle, xpath + "/parentUID");
@@ -222,6 +240,29 @@ namespace generated
                 tixi::TixiRemoveElement(tixiHandle, xpath + "/description");
             }
         }
+
+
+        //if (m_shapeContinuity) {
+            tixi::TixiCreateElementIfNotExists(tixiHandle, xpath + "/shapeContinuity");
+            
+            if (m_shapeContinuity == ::C0) {
+                tixi::TixiSaveElement(tixiHandle, xpath + "/shapeContinuity", "C0");
+            }
+            else if (m_shapeContinuity == ::C2) {
+                tixi::TixiSaveElement(tixiHandle, xpath + "/shapeContinuity", "C2");
+            }
+            else {
+                LOG(ERROR) << "Unknown value for element shapeContinuity " << m_shapeContinuity << " at xpath " << xpath;
+                tixi::TixiSaveElement(tixiHandle, xpath + "/shapeContinuity", "C2");
+            }
+       /* }
+        else {
+            if (tixi::TixiCheckElement(tixiHandle, xpath + "/shapeContinuity")) {
+                tixi::TixiRemoveElement(tixiHandle, xpath + "/shapeContinuity");
+            }
+        }*/
+        
+
 
         // write element parentUID
         if (m_parentUID) {
@@ -328,6 +369,19 @@ namespace generated
     {
         m_description = value;
     }
+
+
+
+    const TiglContinuity CPACSFuselage::GetShapeContinuity() const
+    {
+        return m_shapeContinuity;
+    }
+
+    void CPACSFuselage::SetShapeContinuity(const TiglContinuity value)
+    {
+        m_shapeContinuity = value;
+    }
+
 
     const boost::optional<std::string>& CPACSFuselage::GetParentUID() const
     {
