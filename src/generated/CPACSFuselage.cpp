@@ -137,7 +137,7 @@ namespace generated
             }
             else {
                 LOG(ERROR) << "Unknown value for element shapeContinuity " << shapeContinuityStr << " at xpath " << xpath;
-                m_shapeContinuity = ::C2;
+                m_shapeContinuity = ::C0;
             }
         }
 
@@ -253,7 +253,7 @@ namespace generated
             }
             else {
                 LOG(ERROR) << "Unknown value for element shapeContinuity " << m_shapeContinuity << " at xpath " << xpath;
-                tixi::TixiSaveElement(tixiHandle, xpath + "/shapeContinuity", "C2");
+                tixi::TixiSaveElement(tixiHandle, xpath + "/shapeContinuity", "C0");
             }
        /* }
         else {
