@@ -44,6 +44,7 @@ public:
     TIGL_EXPORT void Invalidate() const;
 
     TIGL_EXPORT TopoDS_Shape const& GetLoft() const;
+    //TIGL_EXPORT TopoDS_Shape const& GetLoftOpen() const;
 
     // calculates the intersection of the stringer frame position with the parent loft (duct/fuselage)
     TIGL_EXPORT gp_Lin Intersection(CCPACSFuselageStringerFramePosition const& pos) const;
@@ -56,9 +57,11 @@ public:
 private:
 
     void StoreLoft(TopoDS_Shape& cache) const;
+    //void StoreLoftOpen(TopoDS_Shape& cache) const;
 
     CTiglRelativelyPositionedComponent const* m_parent;
     Cache<TopoDS_Shape, ITiglFuselageDuctStructure> m_loft;
+    //Cache<TopoDS_Shape, ITiglFuselageDuctStructure> m_loft_open;
 
 };
 
