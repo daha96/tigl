@@ -32,6 +32,7 @@ namespace generated
         , m_transformation(reinterpret_cast<CCPACSFuselage*>(this), m_uidMgr)
         , m_sections(reinterpret_cast<CCPACSFuselage*>(this), m_uidMgr)
         , m_segments(reinterpret_cast<CCPACSFuselage*>(this), m_uidMgr)
+        , m_shapeContinuity(::C0)
     {
         //assert(parent != NULL);
         m_parent = parent;
