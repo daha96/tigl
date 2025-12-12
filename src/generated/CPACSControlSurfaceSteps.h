@@ -64,6 +64,11 @@ namespace generated
         TIGL_EXPORT virtual const std::vector<std::unique_ptr<CPACSControlSurfaceStep>>& GetSteps() const;
         TIGL_EXPORT virtual std::vector<std::unique_ptr<CPACSControlSurfaceStep>>& GetSteps();
 
+        TIGL_EXPORT virtual size_t GetStepCount() const;
+
+        TIGL_EXPORT virtual const CPACSControlSurfaceStep& GetStep(size_t index) const;
+        TIGL_EXPORT virtual CPACSControlSurfaceStep& GetStep(size_t index);
+
         TIGL_EXPORT virtual CPACSControlSurfaceStep& AddStep();
         TIGL_EXPORT virtual void RemoveStep(CPACSControlSurfaceStep& ref);
 
@@ -83,8 +88,9 @@ namespace generated
     };
 } // namespace generated
 
+// CPACSControlSurfaceSteps is customized, use type CCPACSControlSurfaceSteps directly
+
 // Aliases in tigl namespace
-using CCPACSControlSurfaceSteps = generated::CPACSControlSurfaceSteps;
 using CCPACSControlSurfaceStep = generated::CPACSControlSurfaceStep;
 using CCPACSControlSurfacePath = generated::CPACSControlSurfacePath;
 } // namespace tigl

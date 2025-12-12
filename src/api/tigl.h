@@ -158,7 +158,7 @@ enum TiglAxis
     TIGL_Z_AXIS = 3
 };
 
-typedef enum TiglAxis TiglAxis;
+
 
 /**
  \ingroup Enums
@@ -233,6 +233,8 @@ TIGL_COMPONENT_ENGINE_NACELLE,   /**< The Component is a engine nacelle */
 TIGL_COMPONENT_FUSELAGE_WALL,    /**< The Component is a fuselage wall */
 TIGL_COMPONENT_CONTROL_SURFACE_DEVICE, /**< The component is a control surface device (flap) */
 TIGL_COMPONENT_DUCT,              /**< The Component belongs to a duct */
+TIGL_COMPONENT_TANK,             /**< The Component is a fuel tank */
+TIGL_COMPONENT_TANK_HULL,        /**< The Component is a vessel of a fuel tank */
 TIGL_COMPONENT_OTHER
 };
 
@@ -1702,7 +1704,7 @@ TIGL_COMMON_EXPORT TiglReturnCode tiglGetControlSurfaceCount(TiglCPACSConfigurat
                                                              int * numControlSurfaces);
 
 /**
-* @brief Returns the UID of a control surface given its index in a component segment.
+* @brief ths function is deprecated and only works for trailing edge devices. Use the new function 'tiglGetTrailingEdgeDeviceUID' instead.
 *
 *
 * @param[in]  cpacsHandle             Handle for the CPACS configuration
@@ -1724,6 +1726,50 @@ TIGL_COMMON_EXPORT TiglReturnCode tiglGetControlSurfaceUID(TiglCPACSConfiguratio
                                                           char ** controlSurfaceUID);
 
 /**
+* @brief Returns the UID of a trailing edge device given its index in a component segment.
+*
+*
+* @param[in]  cpacsHandle             Handle for the CPACS configuration
+* @param[in]  componentSegmentUID     UID of the componentSegment
+* @param[in]  TrailingEdgeDeviceIndex Index of the leading edge device, starting at 1
+* @param[out] TrailingEdgeDeviceUID   UID of the trailing edge device
+*
+* @return
+*   - TIGL_SUCCESS if no error occurred
+*   - TIGL_NOT_FOUND if no configuration was found for the given handle
+*   - TIGL_UID_ERROR if the component segment does not exist
+*   - TIGL_NULL_POINTER if either the componentSegmentUID or TrailingEdgeDeviceUID are NULL pointers
+*   - TIGL_INDEX_ERROR if the trailing edge device index is invalid
+*   - TIGL_ERROR if some other error occurred
+*/
+TIGL_COMMON_EXPORT TiglReturnCode tiglGetTrailingEdgeDeviceUID(TiglCPACSConfigurationHandle cpacsHandle,
+                                                          const char * componentSegmentUID,
+                                                          int TrailingEdgeDeviceIndex,
+                                                          char ** TrailingEdgeDeviceUID);
+
+/**
+* @brief Returns the UID of a leading edge device given its index in a component segment.
+*
+*
+* @param[in]  cpacsHandle             Handle for the CPACS configuration
+* @param[in]  componentSegmentUID     UID of the componentSegment
+* @param[in]  LeadingEdgeDeviceIndex  Index of the leading edge device, starting at 1
+* @param[out] LeadingEdgeDeviceUID    UID of the leading edge device
+*
+* @return
+*   - TIGL_SUCCESS if no error occurred
+*   - TIGL_NOT_FOUND if no configuration was found for the given handle
+*   - TIGL_UID_ERROR if the component segment does not exist
+*   - TIGL_NULL_POINTER if either the componentSegmentUID or LeadingEdgeDeviceUID are NULL pointers
+*   - TIGL_INDEX_ERROR if the leading edge device index is invalid
+*   - TIGL_ERROR if some other error occurred
+*/
+TIGL_COMMON_EXPORT TiglReturnCode tiglGetLeadingEdgeDeviceUID(TiglCPACSConfigurationHandle cpacsHandle,
+                                                          const char * componentSegmentUID,
+                                                          int LeadingEdgeDeviceIndex,
+                                                          char ** LeadingEdgeDeviceUID);
+
+/**
 * @brief Returns the type of a control surface given its UID.
 *
 *
@@ -1741,8 +1787,7 @@ TIGL_COMMON_EXPORT TiglReturnCode tiglGetControlSurfaceUID(TiglCPACSConfiguratio
 TIGL_COMMON_EXPORT TiglReturnCode tiglGetControlSurfaceType(TiglCPACSConfigurationHandle cpacsHandle,
                                                             const char * controlSurfaceUID,
                                                             TiglControlSurfaceType * controlSurfaceType);
-
-
+                                                         
 /**
 * @brief Returns the minimum value for the control parameter of a control device.
 *
@@ -1790,6 +1835,7 @@ TIGL_COMMON_EXPORT TiglReturnCode tiglControlSurfaceGetMaximumControlParameter(T
                                                                                const char * controlSurfaceUID,
                                                                                double * maxParameter);
 
+
 /**
  * @brief This function is deprecated. It has been renamed to ::tiglControlSurfaceGetMaximumControlParameter.
  *
@@ -1818,6 +1864,7 @@ TIGL_COMMON_EXPORT TiglReturnCode tiglControlSurfaceGetControlParameter(TiglCPAC
                                                                        const char * controlSurfaceUID,
                                                                        double * controlParameter);
 
+
 /**
  * @brief This function is deprecated. It has been renamed to ::tiglControlSurfaceGetControlParameter.
  *
@@ -1844,6 +1891,7 @@ TIGL_COMMON_EXPORT TiglReturnCode tiglControlSurfaceGetDeflection(TiglCPACSConfi
 TIGL_COMMON_EXPORT TiglReturnCode tiglControlSurfaceSetControlParameter(TiglCPACSConfigurationHandle cpacsHandle,
                                                                         const char * controlSurfaceUID,
                                                                         double controlParameter);
+
 
 /**
  * @brief This function is deprecated. It has been renamed to ::tiglControlSurfaceSetControlParameter.

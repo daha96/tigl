@@ -86,7 +86,7 @@ namespace generated
     {
         // read element step
         if (tixi::TixiCheckElement(tixiHandle, xpath + "/step")) {
-            tixi::TixiReadElements(tixiHandle, xpath + "/step", m_steps, 2, tixi::xsdUnbounded, this, m_uidMgr);
+            tixi::TixiReadElements(tixiHandle, xpath + "/step", m_steps, 2, tixi::xsdUnbounded, reinterpret_cast<CCPACSControlSurfaceSteps*>(this), m_uidMgr);
         }
 
     }
@@ -108,9 +108,33 @@ namespace generated
         return m_steps;
     }
 
+    size_t CPACSControlSurfaceSteps::GetStepCount() const
+    {
+        return m_steps.size();
+    }
+
+    CPACSControlSurfaceStep& CPACSControlSurfaceSteps::GetStep(size_t index)
+    {
+        if (index < 1 || index > GetStepCount()) {
+            throw CTiglError("Invalid index in std::vector<std::unique_ptr<CPACSControlSurfaceStep>>::GetStep", TIGL_INDEX_ERROR);
+        }
+        index--;
+        return *m_steps[index];
+    }
+
+    const CPACSControlSurfaceStep& CPACSControlSurfaceSteps::GetStep(size_t index) const
+    {
+        if (index < 1 || index > GetStepCount()) {
+            throw CTiglError("Invalid index in std::vector<std::unique_ptr<CPACSControlSurfaceStep>>::GetStep", TIGL_INDEX_ERROR);
+        }
+        index--;
+        return *m_steps[index];
+    }
+
+
     CPACSControlSurfaceStep& CPACSControlSurfaceSteps::AddStep()
     {
-        m_steps.push_back(make_unique<CPACSControlSurfaceStep>(this, m_uidMgr));
+        m_steps.push_back(make_unique<CPACSControlSurfaceStep>(reinterpret_cast<CCPACSControlSurfaceSteps*>(this), m_uidMgr));
         return *m_steps.back();
     }
 

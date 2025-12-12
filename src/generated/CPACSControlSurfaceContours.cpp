@@ -16,6 +16,7 @@
 // limitations under the License.
 
 #include <cassert>
+#include "CCPACSControlSurfaceOuterShapeLeadingEdge.h"
 #include "CCPACSControlSurfaceOuterShapeTrailingEdge.h"
 #include "CPACSControlSurfaceAirfoil.h"
 #include "CPACSControlSurfaceContours.h"
@@ -29,31 +30,35 @@ namespace tigl
 {
 namespace generated
 {
+    CPACSControlSurfaceContours::CPACSControlSurfaceContours(CCPACSControlSurfaceOuterShapeLeadingEdge* parent, CTiglUIDManager* uidMgr)
+        : m_uidMgr(uidMgr)
+    {
+        //assert(parent != NULL);
+        m_parent = parent;
+        m_parentType = &typeid(CCPACSControlSurfaceOuterShapeLeadingEdge);
+    }
+
     CPACSControlSurfaceContours::CPACSControlSurfaceContours(CCPACSControlSurfaceOuterShapeTrailingEdge* parent, CTiglUIDManager* uidMgr)
         : m_uidMgr(uidMgr)
     {
         //assert(parent != NULL);
         m_parent = parent;
+        m_parentType = &typeid(CCPACSControlSurfaceOuterShapeTrailingEdge);
     }
 
     CPACSControlSurfaceContours::~CPACSControlSurfaceContours()
     {
     }
 
-    const CCPACSControlSurfaceOuterShapeTrailingEdge* CPACSControlSurfaceContours::GetParent() const
-    {
-        return m_parent;
-    }
-
-    CCPACSControlSurfaceOuterShapeTrailingEdge* CPACSControlSurfaceContours::GetParent()
-    {
-        return m_parent;
-    }
-
     const CTiglUIDObject* CPACSControlSurfaceContours::GetNextUIDParent() const
     {
         if (m_parent) {
-            return m_parent->GetNextUIDParent();
+            if (IsParent<CCPACSControlSurfaceOuterShapeLeadingEdge>()) {
+                return GetParent<CCPACSControlSurfaceOuterShapeLeadingEdge>()->GetNextUIDParent();
+            }
+            if (IsParent<CCPACSControlSurfaceOuterShapeTrailingEdge>()) {
+                return GetParent<CCPACSControlSurfaceOuterShapeTrailingEdge>()->GetNextUIDParent();
+            }
         }
         return nullptr;
     }
@@ -61,7 +66,12 @@ namespace generated
     CTiglUIDObject* CPACSControlSurfaceContours::GetNextUIDParent()
     {
         if (m_parent) {
-            return m_parent->GetNextUIDParent();
+            if (IsParent<CCPACSControlSurfaceOuterShapeLeadingEdge>()) {
+                return GetParent<CCPACSControlSurfaceOuterShapeLeadingEdge>()->GetNextUIDParent();
+            }
+            if (IsParent<CCPACSControlSurfaceOuterShapeTrailingEdge>()) {
+                return GetParent<CCPACSControlSurfaceOuterShapeTrailingEdge>()->GetNextUIDParent();
+            }
         }
         return nullptr;
     }
@@ -107,6 +117,30 @@ namespace generated
     {
         return m_intermediateAirfoils;
     }
+
+    size_t CPACSControlSurfaceContours::GetIntermediateAirfoilCount() const
+    {
+        return m_intermediateAirfoils.size();
+    }
+
+    CPACSControlSurfaceAirfoil& CPACSControlSurfaceContours::GetIntermediateAirfoil(size_t index)
+    {
+        if (index < 1 || index > GetIntermediateAirfoilCount()) {
+            throw CTiglError("Invalid index in std::vector<std::unique_ptr<CPACSControlSurfaceAirfoil>>::GetIntermediateAirfoil", TIGL_INDEX_ERROR);
+        }
+        index--;
+        return *m_intermediateAirfoils[index];
+    }
+
+    const CPACSControlSurfaceAirfoil& CPACSControlSurfaceContours::GetIntermediateAirfoil(size_t index) const
+    {
+        if (index < 1 || index > GetIntermediateAirfoilCount()) {
+            throw CTiglError("Invalid index in std::vector<std::unique_ptr<CPACSControlSurfaceAirfoil>>::GetIntermediateAirfoil", TIGL_INDEX_ERROR);
+        }
+        index--;
+        return *m_intermediateAirfoils[index];
+    }
+
 
     CPACSControlSurfaceAirfoil& CPACSControlSurfaceContours::AddIntermediateAirfoil()
     {

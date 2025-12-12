@@ -19,7 +19,9 @@
 
 #include <string>
 #include <tixi.h>
+#include <typeinfo>
 #include <vector>
+#include "CTiglError.h"
 #include "tigl_internal.h"
 #include "UniquePtr.h"
 
@@ -27,6 +29,7 @@ namespace tigl
 {
 class CTiglUIDManager;
 class CTiglUIDObject;
+class CCPACSLeadingEdgeDevice;
 class CCPACSTrailingEdgeDevice;
 
 namespace generated
@@ -34,6 +37,7 @@ namespace generated
     class CPACSControlSurfaceTrackType;
 
     // This class is used in:
+    // CPACSLeadingEdgeDevice
     // CPACSTrailingEdgeDevice
 
     /// @brief Control surface tracks (mechnaical link between control
@@ -44,13 +48,36 @@ namespace generated
     class CPACSControlSurfaceTracks
     {
     public:
+        TIGL_EXPORT CPACSControlSurfaceTracks(CCPACSLeadingEdgeDevice* parent, CTiglUIDManager* uidMgr);
         TIGL_EXPORT CPACSControlSurfaceTracks(CCPACSTrailingEdgeDevice* parent, CTiglUIDManager* uidMgr);
 
         TIGL_EXPORT virtual ~CPACSControlSurfaceTracks();
 
-        TIGL_EXPORT CCPACSTrailingEdgeDevice* GetParent();
+        template<typename P>
+        bool IsParent() const
+        {
+            return m_parentType != NULL && *m_parentType == typeid(P);
+        }
 
-        TIGL_EXPORT const CCPACSTrailingEdgeDevice* GetParent() const;
+        template<typename P>
+        P* GetParent()
+        {
+            static_assert(std::is_same<P, CCPACSLeadingEdgeDevice>::value || std::is_same<P, CCPACSTrailingEdgeDevice>::value, "template argument for P is not a parent class of CPACSControlSurfaceTracks");
+            if (!IsParent<P>()) {
+                throw CTiglError("bad parent");
+            }
+            return static_cast<P*>(m_parent);
+        }
+
+        template<typename P>
+        const P* GetParent() const
+        {
+            static_assert(std::is_same<P, CCPACSLeadingEdgeDevice>::value || std::is_same<P, CCPACSTrailingEdgeDevice>::value, "template argument for P is not a parent class of CPACSControlSurfaceTracks");
+            if (!IsParent<P>()) {
+                throw CTiglError("bad parent");
+            }
+            return static_cast<P*>(m_parent);
+        }
 
         TIGL_EXPORT virtual CTiglUIDObject* GetNextUIDParent();
         TIGL_EXPORT virtual const CTiglUIDObject* GetNextUIDParent() const;
@@ -64,11 +91,21 @@ namespace generated
         TIGL_EXPORT virtual const std::vector<std::unique_ptr<CPACSControlSurfaceTrackType>>& GetTracks() const;
         TIGL_EXPORT virtual std::vector<std::unique_ptr<CPACSControlSurfaceTrackType>>& GetTracks();
 
+        TIGL_EXPORT virtual size_t GetTrackCount() const;
+        TIGL_EXPORT virtual size_t GetTrackIndex(const std::string& UID) const;
+
+        TIGL_EXPORT virtual const CPACSControlSurfaceTrackType& GetTrack(size_t index) const;
+        TIGL_EXPORT virtual CPACSControlSurfaceTrackType& GetTrack(size_t index);
+
+        TIGL_EXPORT virtual const CPACSControlSurfaceTrackType& GetTrack(const std::string& UID) const;
+        TIGL_EXPORT virtual CPACSControlSurfaceTrackType& GetTrack(const std::string& UID);
+
         TIGL_EXPORT virtual CPACSControlSurfaceTrackType& AddTrack();
         TIGL_EXPORT virtual void RemoveTrack(CPACSControlSurfaceTrackType& ref);
 
     protected:
-        CCPACSTrailingEdgeDevice* m_parent;
+        void* m_parent;
+        const std::type_info* m_parentType;
 
         CTiglUIDManager* m_uidMgr;
 
