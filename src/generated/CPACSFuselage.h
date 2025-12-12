@@ -81,6 +81,9 @@ namespace generated
         TIGL_EXPORT virtual const boost::optional<std::string>& GetDescription() const;
         TIGL_EXPORT virtual void SetDescription(const boost::optional<std::string>& value);
 
+        TIGL_EXPORT virtual const TiglContinuity GetShapeContinuity() const;
+        TIGL_EXPORT virtual void SetShapeContinuity(TiglContinuity value);
+
         TIGL_EXPORT virtual const boost::optional<std::string>& GetParentUID() const;
         TIGL_EXPORT virtual void SetParentUID(const boost::optional<std::string>& value);
 
@@ -125,6 +128,8 @@ namespace generated
 
         /// Description of fuselage
         boost::optional<std::string>             m_description;
+
+        TiglContinuity             m_shapeContinuity;
 
         /// UID of part to which the fuselage is
         /// mounted (if any)

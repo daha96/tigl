@@ -48,6 +48,8 @@ public:
 
     TIGL_EXPORT const CCPACSWingCell& GetCell(int index) const;
     TIGL_EXPORT CCPACSWingCell& GetCell(int index);
+    //TIGL_EXPORT CCPACSWingCell& GetCell(const std::string& cellUID);
+
 
     TIGL_EXPORT const CCPACSMaterialDefinition& GetMaterial() const;
     TIGL_EXPORT CCPACSMaterialDefinition& GetMaterial();

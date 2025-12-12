@@ -36,22 +36,38 @@ namespace tigl {
 ITiglFuselageDuctStructure::ITiglFuselageDuctStructure(CTiglRelativelyPositionedComponent const* parent)
  : m_parent(parent)
  , m_loft(*this, &ITiglFuselageDuctStructure::StoreLoft)
+ //, m_loft_open(*this, &ITiglFuselageDuctStructure::StoreLoftOpen)
 {}
 
 void ITiglFuselageDuctStructure::Invalidate() const
 {
     m_loft.clear();
+    //m_loft_open.clear();
 }
 
 void ITiglFuselageDuctStructure::StoreLoft(TopoDS_Shape& cache) const
 {
-    cache = m_parent->GetTransformationMatrix().Inverted().Transform(m_parent->GetLoft()->DeepCopy()->Shape());
+    //cache = m_parent->GetTransformationMatrix().Inverted().Transform(m_parent->GetLoft()->DeepCopy()->Shape());
+    const CCPACSFuselage* parent = static_cast<const CCPACSFuselage*>(m_parent);
+    cache = parent->GetTransformationMatrix().Inverted().Transform(parent->GetLoftOpen()->DeepCopy()->Shape());
 }
 
 TopoDS_Shape const& ITiglFuselageDuctStructure::GetLoft() const
 {
         return *m_loft;
 }
+
+/*
+void ITiglFuselageDuctStructure::StoreLoftOpen(TopoDS_Shape& cache) const
+{
+    cache = m_parent->GetTransformationMatrix().Inverted().Transform(m_parent->GetLoftOpen()->DeepCopy()->Shape());
+}
+
+TopoDS_Shape const& ITiglFuselageDuctStructure::GetLoftOpen() const
+{
+        return *m_loft_open;
+}
+*/
 
 gp_Lin ITiglFuselageDuctStructure::Intersection(CCPACSFuselageStringerFramePosition const& pos) const
 {
