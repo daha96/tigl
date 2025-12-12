@@ -105,11 +105,6 @@ namespace generated
         TIGL_EXPORT virtual CCPACSFuselageStringer& AddStringer();
         TIGL_EXPORT virtual void RemoveStringer(CCPACSFuselageStringer& ref);
 
-    TIGL_EXPORT int GetStringerCount() const;
-    TIGL_EXPORT CCPACSFuselageStringer& GetStringer(int index) const;
-    TIGL_EXPORT int GetStringerIndex(const std::string& UID) const;
-    TIGL_EXPORT CCPACSFuselageStringer& GetStringer(const std::string& uid) const;
-
     protected:
         void* m_parent;
         const std::type_info* m_parentType;

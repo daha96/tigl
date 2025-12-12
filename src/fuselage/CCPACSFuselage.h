@@ -127,6 +127,9 @@ public:
     // Returns all guide curve points
     TIGL_EXPORT std::vector<gp_Pnt> GetGuideCurvePoints() const;
 
+    // Gets the loft of a geometric component
+    TIGL_EXPORT PNamedShape GetLoftOpen() const {return *cleanLoftOpen;}
+
 
     /*
      * Creator functions
