@@ -9,7 +9,7 @@ channel-priority = "disabled"
 [feature.base.dependencies]
 # Base dependencies for all builds
 tixi3 = "3.3.1.*"
-# qt = { version = "5.15.15.*", channel = "conda-forge" }
+#qt = { version = "5.15.15.*", channel = "conda-forge" }
 python = "*"
 matlab-libs = "*"
 ninja = ">=1.10.0"
@@ -26,7 +26,7 @@ setuptools = "*"
 # these are optional, but needed for some of the python examples:
 numpy = "*"
 matplotlib = "*"
-# pyqt = ">=5.15.11,<6"
+#pyqt = ">=5.15.11,<6"
 
 [feature.opencascade-static.dependencies]
 opencascade-static = "7.6.2.*"
@@ -102,7 +102,7 @@ tiglcreator = { cmd = "./tiglcreator", cwd = "build/install/bin"}
 # occt-static feature builds with static OpenCASCADE libraries
 "occt-static" = ["base", "opencascade-static"]
 # python-internal feature builds the internal python bindings of the C++ core using swig
-"python-internal" = ["base", "python-internal"]
+"python-internal" = ["base","opencascade", "python-internal"]
 
 [feature.coverage.tasks]
 # The coverage feature builds in debug mode and runs the tests with coverage flags enabled
@@ -159,9 +159,10 @@ configure = { cmd = [
     "-D", "CMAKE_INSTALL_PREFIX=$CONDA_PREFIX", 
     "-D", "CMAKE_BUILD_TYPE={{ config }}",
     "-D", "TIGL_NIGHTLY={{ nightly }}",
-    "-D", "TIGL_CONCAT_GENERATED_FILES={{ nightly }}",
-    "-D", "TIGL_BUILD_TESTS=ON",
+    "-D", "TIGL_CONCAT_GENERATED_FILES=ON",
+    "-D", "TIGL_BUILD_TESTS=OFF",
     "-D", "TIGL_BINDINGS_PYTHON_INTERNAL=ON",
+    "-D", "TIGL_CREATOR=OFF",
     "-D", "Python3_FIND_STRATEGY=LOCATION",
     "-D", "Python3_FIND_FRAMEWORK=NEVER",
     "-D", "TIGL_BINDINGS_PYTHON=ON",
