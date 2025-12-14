@@ -122,5 +122,5 @@ namespace generated
     };
 } // namespace generated
 
-// CPACSStringersAssembly is customized, use type CCPACSStringersAssembly directly
+// CPACSStringersAssembly is customized, use type CCPACSFuselageStringersAssembly directly
 } // namespace tigl

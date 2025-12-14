@@ -18,6 +18,7 @@
 
 #include "CTrimShape.h"
 
+//#include "CTiglLogging.h"
 #include "CBooleanOperTools.h"
 #include "GEOMAlgo_Splitter.hxx"
 #include "BOPBuilderShapeToBRepBuilderShapeAdapter.h"
@@ -231,11 +232,29 @@ void CTrimShape::Perform()
         }
 
         PrepareFiller();
+//        BOPAlgo_PaveFiller *filler = _dsfiller;
         GEOMAlgo_Splitter splitter;
         BOPBuilderShapeToBRepBuilderShapeAdapter splitAdapter(splitter);
         splitter.AddArgument(_source->Shape());
         splitter.AddTool(_tool->Shape());
+
         splitter.PerformWithFiller(*_dsfiller);
+        //splitter.PerformWithFiller(*filler);
+
+
+        /*if (filler->HasWarnings()) {
+            std::ostringstream ss;
+            filler->DumpWarnings(ss);
+            LOG(WARNING) << "CTrimShape::Perform warning: ";// << ss.str();
+            LOG(WARNING) << ss.str();
+        }
+
+        if (filler->HasErrors()) {
+            std::ostringstream ss;
+            filler->DumpErrors(ss);
+            LOG(ERROR) << "CTrimShape::Perform error: ";// << ss.str();
+            LOG(ERROR) << ss.str();
+        }*/
 
         if (debug) {
             WriteDebugShape(splitter.Shape(), "split");

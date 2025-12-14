@@ -187,7 +187,7 @@ void CCPACSFuselageStringer::BuildCutGeometry(TopoDS_Shape& cache) const
                     stringerOnFace      = true;
                     const gp_Vec normal = gp_Vec(GeomLProp_SLProps(surf, uv.X(), uv.Y(), 1, 0.01).Normal());
                     const double cutPlaneDepth =
-                        fuselageBox.SquareExtent() * 1e-6; // fuselageBox.SquareExtent()*1.994e-7 + 0.125;
+                        fuselageBox.SquareExtent() * 1e-6+0.125; // fuselageBox.SquareExtent()*1.994e-7 + 0.125;
                     normalEdge = BRepBuilderAPI_MakeEdge(pntA.Translated(-normal * cutPlaneDepth),
                                                          pntA.Translated(normal * cutPlaneDepth));
                     wireBuilder.Add(edge);
