@@ -357,6 +357,9 @@ namespace tigl
 %include "CTiglStringerFrameBorderedObject.h"
 %include "generated/CPACSSkinSegment.h"
 %include "CCPACSSkinSegment.h"
+%boost_optional(tigl::CCPACSSkin)
+%include "generated/CPACSSkin.h"
+%include "CCPACSSkin.h"
 %include "generated/CPACSCargoDoorsAssembly.h"
 %include "generated/CPACSPressureBulkheadAssembly.h"
 %include "CCPACSPressureBulkheadAssembly.h"
@@ -374,6 +377,7 @@ namespace tigl
 %include "generated/CPACSPressureBulkheadAssemblyPosition.h"
 %include "CCPACSPressureBulkheadAssemblyPosition.h"
 %include "generated/CPACSFrame.h"
+%include "CCPACSFrame.h"
 %include "generated/CPACSFramesAssembly.h"
 %include "CCPACSFramesAssembly.h"
 
