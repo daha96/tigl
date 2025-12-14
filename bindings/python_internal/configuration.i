@@ -100,12 +100,7 @@
 #include "generated/CPACSLateralCap_placement.h"
 #include "generated/CPACSLateralCap.h"
 #include "generated/CPACSBoundingElementUIDs.h"
-
-#include "generated/CPACSFrame.h"
-#include "CCPACSFrame.h"
-#include "generated/CPACSStringer.h"
 #include "CCPACSFuselageStringer.h"
-
 #include "generated/CPACSStructuralWallElement.h"
 #include "generated/CPACSStructuralWallElements.h"
 #include "generated/CPACSWalls.h"
@@ -362,9 +357,6 @@ namespace tigl
 %include "CTiglStringerFrameBorderedObject.h"
 %include "generated/CPACSSkinSegment.h"
 %include "CCPACSSkinSegment.h"
-%boost_optional(tigl::CCPACSSkin)
-%include "generated/CPACSSkin.h"
-%include "CCPACSSkin.h"
 %include "generated/CPACSCargoDoorsAssembly.h"
 %include "generated/CPACSPressureBulkheadAssembly.h"
 %include "CCPACSPressureBulkheadAssembly.h"

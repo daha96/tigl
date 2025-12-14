@@ -96,7 +96,6 @@
 %template(SurfaceList) std::vector<Handle(Geom_Surface)>;
 %template(CurveIntersectionResultList) std::vector<tigl::CurveIntersectionResult>;
 
-
 %boost_optional(tigl::CCPACSPointAbsRel)
 %boost_optional(tigl::CCPACSPoint)
 %boost_optional(tigl::ECPACSTranslationType)
