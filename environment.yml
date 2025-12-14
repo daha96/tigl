@@ -10,16 +10,21 @@ dependencies:
  - opencascade=7.6.2             # library for dealing with b-spline and nurbs geometries. dlr-sc version contains patch for C2-cont. Coons patches
  # optional dependencies
  - conda-forge::qt=5.15.15        # needed to build tiglviewer
- - doxygen=1.8.15                # needed to build the documenation
+ - doxygen                # needed to build the documenation
  - python=3.12                    # needed to build python bindings
- - swig>=3.0.11,<4.0                 # needed to build python bindings
+ - swig>=3.0.11                 # needed to build python bindings
  - pythonocc-core=7.6.2          # needed to build python bindings
  - matlab-libs                   # needed to build matlab bindings
  # other build dependencies
- - ninja>=1.10.0                 # not strictly needed, tigl can be build using any other camke generator
+ - ninja                 # not strictly needed, tigl can be build using any other camke generator
+ - cmake
  - freeimageplus                 # used by opencascade
  - brotlipy                      # Workaround for issue on windows, see: https://github.com/conda/conda/issues/9903#issuecomment-647091019
  # other
  - setuptools
  - numpy
  - matplotlib
+ - tbb-devel==2019.5
+ - tbb==2019.5
+# - qt=5.15.15
+# - pyqt>=5.15.11,<6
